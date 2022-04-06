@@ -18,14 +18,16 @@ public class OrderTester {
 
 		var customerId = UUID.randomUUID();
 
-		var voucherRepository = applicationContext.getBean(VoucherRepository.class);
-		var voucher = voucherRepository.insert(new FixedAmountVoucher(UUID.randomUUID(), 10L));
+		var voucherRepository1 = applicationContext.getBean(VoucherRepository.class);
+
+		var voucher = voucherRepository1.insert(new FixedAmountVoucher(UUID.randomUUID(), 10L));
 		var orderService = applicationContext.getBean(OrderService.class);
 
 		var order = orderService.createOrder(customerId, new ArrayList<OrderItem>() {{
 			add(new OrderItem(UUID.randomUUID(), 100L, 1));
 		}},voucher.getVoucherId());
 
+		applicationContext.close();
 		Assert.isTrue(order.totalAmount() == 90L,
 			MessageFormat.format("totalAmount {0}is not 90L", order.totalAmount()));
 	}

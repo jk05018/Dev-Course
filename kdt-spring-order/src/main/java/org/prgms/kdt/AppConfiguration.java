@@ -18,4 +18,16 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 @ComponentScan(basePackages = {"org.prgms.kdt.order","org.prgms.kdt.voucher"})
 public class AppConfiguration {
+
+	@Bean(initMethod = "init")
+	public BeanOne beanOne(){
+		return new BeanOne();
+	}
+}
+
+class BeanOne{
+	public void init(){
+
+	}
+
 }
