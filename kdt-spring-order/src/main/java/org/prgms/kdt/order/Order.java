@@ -1,8 +1,10 @@
-package org.prgms.kdt;
+package org.prgms.kdt.order;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+
+import org.prgms.kdt.voucher.Voucher;
 
 public class Order {
 	//Entity는 식별자를 가지고 있어야 한다
@@ -25,6 +27,10 @@ public class Order {
 		this.customerId = customerId;
 		this.orderItems = orderItems;
 		this.voucher = Optional.of(voucher);
+	}
+
+	public UUID getOrderId() {
+		return orderId;
 	}
 
 	public long totalAmount() {

@@ -4,6 +4,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
 /**
@@ -15,35 +16,6 @@ import org.springframework.context.annotation.Configuration;
  * 스프링 컨테이너 역할?
  */
 @Configuration
+@ComponentScan(basePackages = {"org.prgms.kdt.order","org.prgms.kdt.voucher"})
 public class AppConfiguration {
-
-	@Bean
-	public VoucherRepository voucherRepository() {
-		return new VoucherRepository() {
-			@Override
-			public Optional<Voucher> findById(UUID voucherId) {
-				return Optional.empty();
-			}
-		};
-	}
-
-	@Bean
-	public OrderRepository orderRepository() {
-		return new OrderRepository() {
-			@Override
-			public void insert(Order order) {
-
-			}
-		};
-	}
-
-	@Bean
-	public VoucherService voucherService(VoucherRepository voucherRepository) {
-		return new VoucherService(voucherRepository);
-	}
-
-	@Bean
-	public OrderService orderService(VoucherService voucherService ,OrderRepository orderRepository) {
-		return new OrderService(voucherService, orderRepository);
-	}
 }
