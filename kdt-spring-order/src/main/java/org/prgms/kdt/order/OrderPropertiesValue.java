@@ -7,7 +7,7 @@ import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-@Component
+// @Component
 public class OrderPropertiesValue implements InitializingBean {
 
 	// @Value로 아예 값을 지정해 줄 수 있고 저장되어있는 Properties 값을 가져올 수 있다.

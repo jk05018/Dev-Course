@@ -3,7 +3,7 @@ package org.prgms.kdt.order;
 import java.util.List;
 import java.util.UUID;
 
-import org.prgms.kdt.applicationconfiguration.VersionProvider;
+import org.prgms.kdt.configuration.VersionProvider;
 import org.prgms.kdt.voucher.VoucherService;
 import org.springframework.stereotype.Service;
 

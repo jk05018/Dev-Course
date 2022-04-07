@@ -10,13 +10,11 @@ import javax.annotation.PreDestroy;
 
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.InitializingBean;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.context.annotation.Primary;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Repository;
 
 @Repository
-// @Qualifier("local")
-@Primary
+@Profile({"local","default"})
 public class MemoryVoucherRepository implements VoucherRepository , InitializingBean , DisposableBean {
 	// 스레드 상에서도 안전하게 동작하기 위해 Concurrent Hash Map을 사용 하였다.
 	private final Map<UUID, Voucher> storage = new ConcurrentHashMap<>();

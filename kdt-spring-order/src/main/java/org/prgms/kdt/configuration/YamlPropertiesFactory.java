@@ -1,7 +1,6 @@
-package org.prgms.kdt.applicationconfiguration;
+package org.prgms.kdt.configuration;
 
 import java.io.IOException;
-import java.util.Properties;
 
 import org.springframework.beans.factory.config.YamlPropertiesFactoryBean;
 import org.springframework.core.env.PropertiesPropertySource;

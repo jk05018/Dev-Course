@@ -1,14 +1,45 @@
-# value를 입력할 때 한칸을 띄워야 한다.
+# default일때
+
 kdt:
-  version: "v1.0.0"
-  minimum-order-amount: 1
+  version: "default v0.0.0"
+  minimum-order-amount: 0
   support-vendors:
-    - a
-    - b
-    - c
-    - d
-  description: |- # multi line
-    line1 hello world
-    line2 hallo
+    - default
+
+#---
+#
+#spring.config.activate.on-profile: local
+#
+## value를 입력할 때 한칸을 띄워야 한다.
+#kdt:
+#  version: "v1.0.0"
+#  minimum-order-amount: 1
+#  support-vendors:
+#    - a
+#    - b
+#    - c
+#    - d
+#  description: |- # multi line
+#    line1 hello world
+#    line2 hallo
+#
+## 하나의 파일로 여러개의 profile을 지정할 수 있따.
+#---
+#spring.config.activate.on-profile: dev
+#
+#kdt:
+#  version: "v2.2.2"
+#  minimum-order-amount: 2
+#  support-vendors:
+#    - e
+#    - f
+#    - g
+#    - h
+#  description: |- # multi line
+#    line1 hello world
+#    line2 hallo
+#
+#
+#---
 
 
