@@ -1,11 +1,10 @@
 package org.prgms.kdt;
 
-import java.util.Optional;
-import java.util.UUID;
-
-import org.springframework.context.annotation.Bean;
+import org.prgms.kdt.applicationconfiguration.YamlPropertiesFactory;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
 
 /**
  * 각각의 컴포넌트들을 생성하는 클래스 ?
@@ -16,18 +15,11 @@ import org.springframework.context.annotation.Configuration;
  * 스프링 컨테이너 역할?
  */
 @Configuration
-@ComponentScan(basePackages = {"org.prgms.kdt.order","org.prgms.kdt.voucher"})
+@ComponentScan(basePackages = {"org.prgms.kdt.order","org.prgms.kdt.voucher","org.prgms.kdt.applicationconfiguration"})
+// @PropertySource("application.properties")
+@PropertySource(value = "application.yaml", factory = YamlPropertiesFactory.class)
+@EnableConfigurationProperties // 얘는 SpringBoot에 있는 내용이다.
 public class AppConfiguration {
 
-	@Bean(initMethod = "init")
-	public BeanOne beanOne(){
-		return new BeanOne();
-	}
 }
 
-class BeanOne{
-	public void init(){
-
-	}
-
-}
