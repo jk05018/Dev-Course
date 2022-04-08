@@ -12,7 +12,7 @@ public class OrderPropertiesValue implements InitializingBean {
 
 	// @Value로 아예 값을 지정해 줄 수 있고 저장되어있는 Properties 값을 가져올 수 있다.
 	// 만약 값이 없을때 기본값을 지정하려면 ${kdt.versiuon:null입니다!} 이렇게 지정해 주면 된다.
-	// ${} 키를 전달해서 가지고
+	// ${} 키를 전달
 	@Value("${kdt.version}")
 	private String version;
 
