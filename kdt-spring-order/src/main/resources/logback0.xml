@@ -1,0 +1,26 @@
+<configuration>
+<!--설정 파일의 루트 요소 = Configuration 안에 appender, root가 존재 -->
+
+<!-- appender 어디에 어떤 포맷으로 로그를 남길 수 있는지 설정 , 콘솔, 파일, 등등 다양한 방식으로 로그를 기록한다 -->
+    <!--  <appender name="STDOUT" class="ch.qos.logback.core.FileAppender">-->
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+<!--    이렇게 로거마다 별도의 레벨의 지정할 수 있다.-->
+<!--    appender-ref 설정은 조심! 만약 같은 appender-ref를 지정한다면 2번출력 -> additivity를 false로 설정하자-->
+    <logger name = "org.prgms.kdt.OrderTester" level = "info" additivity = "false">
+        <appender-ref ref="STDOUT"/>
+    </logger>
+
+<!--    따로 로거를 설정할 떄는 appender-ref를 사용하지 않거나, 다른 ppender를 주거나 아래 처럼 사용하자!-->
+    <logger name = "org.prgms.kdt" level="info"/>
+
+<!--   rppt는 클래스 패스 상에서 모든 로그들에게 다 적용  -->
+    <root level="debug">
+<!--        STDOUT이라는 appender를 통해 로그를 출력할 것이-->
+        <appender-ref ref="STDOUT" />
+    </root>
+</configuration>

@@ -1,0 +1,50 @@
+<configuration>
+
+<!--    SpringBoot에서 제공해주는 converterRule를 이용해보자-->
+    <conversionRule
+            conversionWord = "clr"
+            converterClass = "org.springframework.boot.logging.logback.ColorConverter"/>
+    <property name = "LOG_PATTERN" value = "%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n"/>
+    <timestamp key="bySecond" datePattern = "yyyyMMdd'T'HHmmss"/>
+
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>${LOG_PATTERN}</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="FILE" class="ch.qos.logback.core.FileAppender">
+<!--        무슨 파일로 남길 건지 작성해 줘야한다  -->
+<!--        시간에 따라서 다른 log파일을 만들고 싶은 경우-->
+        <file>logs/kdt_${bySecond}.log</file>
+        <!--        계속 실행시키면 File에 로그가 계속 append된다. append를 false로 지정한다면 덮어쓴다. -->
+<!--        <append>false</append>-->
+        <encoder>
+            <pattern>${LOG_PATTERN}</pattern>
+        </encoder>
+    </appender>
+
+
+    <!--        어플리케이션을 구동하면 얼마나 오래갈지 모름 하루, 이틀 한달 1년 -> RollingFileAppender를 사용하여 일정 시간마다 log파일을 생성하자-->
+<!--    RollingFileAppender에는  크게 RollingPolicy(뭘 만들거냐, 파일을 어떻게 만들거냐)와  Trigger Policy(언제 만들거냐)를 모두 정의해야 한다.-->
+<!--    TimeBasedRollingPolicy는 RollingPolicy와 Trigger Policy모두를 구현하고 있기 때문에 이것만 설정하면 된다.-->
+    <appender name="ROLLING_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+<!--        file을 넣고 안넣고에 따라서 rolling이 되는 방식에 차이가 있다? 파일 이름을 안주면 바로 파일 일자를 보함한 파일이 만ㄷ르어진다.-->
+<!--        이렇게 준다면 당일 log는 access.log에 저장되다가 다음날이 되는 순간 fileNamePattern에 맞게 자동으로 변경된다.-->
+        <file>logs/access.log</file>
+        <rollingPolicy class = "ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>logs/access-%d{yyyy-MM-dd}.log</fileNamePattern>
+        </rollingPolicy>
+        <encoder>
+            <pattern>${LOG_PATTERN}</pattern>
+        </encoder>
+    </appender>
+
+    <logger name = "org.prgms.kdt" level="info">
+        <appender-ref ref="ROLLING_FILE" />
+    </logger>
+
+    <root level="warn">
+        <appender-ref ref="STDOUT" />
+    </root>
+</configuration>
