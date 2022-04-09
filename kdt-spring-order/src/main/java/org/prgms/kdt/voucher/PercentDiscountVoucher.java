@@ -2,7 +2,7 @@ package org.prgms.kdt.voucher;
 
 import java.util.UUID;
 
-public class PercentDiscountVoucher implements Voucher{
+public class PercentDiscountVoucher implements Voucher {
 	private final UUID voucherOd;
 	private final long percent;
 
@@ -18,6 +18,6 @@ public class PercentDiscountVoucher implements Voucher{
 
 	@Override
 	public long discount(long beforeDiscount) {
-		return beforeDiscount - beforeDiscount * percent/100;
+		return beforeDiscount - beforeDiscount * percent / 100;
 	}
 }

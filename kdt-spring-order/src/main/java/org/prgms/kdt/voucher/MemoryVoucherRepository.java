@@ -14,8 +14,8 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Repository;
 
 @Repository
-@Profile({"local","default"})
-public class MemoryVoucherRepository implements VoucherRepository , InitializingBean , DisposableBean {
+@Profile({"local", "default"})
+public class MemoryVoucherRepository implements VoucherRepository, InitializingBean, DisposableBean {
 	// 스레드 상에서도 안전하게 동작하기 위해 Concurrent Hash Map을 사용 하였다.
 	private final Map<UUID, Voucher> storage = new ConcurrentHashMap<>();
 
@@ -31,7 +31,7 @@ public class MemoryVoucherRepository implements VoucherRepository , Initializing
 	}
 
 	@PostConstruct
-	public void postConstruct(){
+	public void postConstruct() {
 		System.out.println("postConstruct called!");
 
 	}
@@ -42,9 +42,10 @@ public class MemoryVoucherRepository implements VoucherRepository , Initializing
 	}
 
 	@PreDestroy
-	public void preDestroy(){
+	public void preDestroy() {
 		System.out.println("predestroy called");
 	}
+
 	@Override
 	public void destroy() throws Exception {
 		System.out.println("destroy called");

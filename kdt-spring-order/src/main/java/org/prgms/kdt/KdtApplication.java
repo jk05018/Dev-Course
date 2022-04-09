@@ -16,7 +16,7 @@ import org.springframework.context.annotation.ComponentScan;
 
 @SpringBootApplication
 @ComponentScan(basePackages =
-	{"org.prgms.kdt.order","org.prgms.kdt.voucher", "org.prgms.kdt.configuration"})
+	{"org.prgms.kdt.order", "org.prgms.kdt.voucher", "org.prgms.kdt.configuration"})
 public class KdtApplication {
 
 	private static final Logger logger = LoggerFactory.getLogger(KdtApplication.class);
@@ -33,14 +33,14 @@ public class KdtApplication {
 		logger.info(MessageFormat.format("support-vendors : {0}", orderProperties.getSupportVendors()));
 		logger.info(MessageFormat.format("description : {0}", orderProperties.getDescription()));
 
-
 		var customerId = UUID.randomUUID();
 
 		var voucherRepository = applicationContext.getBean(VoucherRepository.class);
 		var voucher = voucherRepository.insert(new FixedAmountVoucher(UUID.randomUUID(), 10L));
 
 		System.out.println(
-			MessageFormat.format("is Jdbc Repo -> {0}",voucherRepository instanceof JdbcVoucherRepository));
-		System.out.println(MessageFormat.format("is Jdbc Repo -> {0}",voucherRepository.getClass().getCanonicalName()));
+			MessageFormat.format("is Jdbc Repo -> {0}", voucherRepository instanceof JdbcVoucherRepository));
+		System.out.println(
+			MessageFormat.format("is Jdbc Repo -> {0}", voucherRepository.getClass().getCanonicalName()));
 	}
 }

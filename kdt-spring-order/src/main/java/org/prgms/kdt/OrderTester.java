@@ -36,7 +36,7 @@ public class OrderTester {
 	private static final Logger logger = LoggerFactory.getLogger(OrderTester.class);
 
 	public static void main(String[] args) throws IOException {
-		var applicationContext = new AnnotationConfigApplicationContext(AppConfiguration.class);;
+		var applicationContext = new AnnotationConfigApplicationContext(AppConfiguration.class);
 
 		/*var version = environment.getProperty("kdt.version",String.class);
 		var minOrderAmount = environment.getProperty("kdt.minimum-order-amount",Integer.class);

@@ -23,8 +23,6 @@ public class OrderProperties implements InitializingBean {
 
 	private String description;
 
-
-
 	@Override
 	public void afterPropertiesSet() throws Exception {
 		logger.debug("OrderProperties yaml start");

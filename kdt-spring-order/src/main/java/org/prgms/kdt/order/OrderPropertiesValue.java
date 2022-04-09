@@ -20,7 +20,7 @@ public class OrderPropertiesValue implements InitializingBean {
 	private int minimumOrderAmount;
 
 	@Value("${kdt.support-vendors}")
-	private List<String>  supportVendors;
+	private List<String> supportVendors;
 
 	@Value("${JAVA_HOME}")
 	private String javaHome;

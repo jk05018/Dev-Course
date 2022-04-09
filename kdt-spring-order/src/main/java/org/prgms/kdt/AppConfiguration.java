@@ -15,7 +15,7 @@ import org.springframework.context.annotation.PropertySource;
  * 스프링 컨테이너 역할?
  */
 @Configuration
-@ComponentScan(basePackages = {"org.prgms.kdt.order","org.prgms.kdt.voucher", "org.prgms.kdt.configuration"})
+@ComponentScan(basePackages = {"org.prgms.kdt.order", "org.prgms.kdt.voucher", "org.prgms.kdt.configuration"})
 // @PropertySource("application.properties")
 @PropertySource(value = "application.yaml", factory = YamlPropertiesFactory.class)
 @EnableConfigurationProperties // 얘는 SpringBoot에 있는 내용이다.

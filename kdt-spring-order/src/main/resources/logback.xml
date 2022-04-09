@@ -4,6 +4,7 @@
     <conversionRule
             conversionWord = "clr"
             converterClass = "org.springframework.boot.logging.logback.ColorConverter"/>
+
     <property name = "LOG_PATTERN" value = "%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n"/>
     <timestamp key="bySecond" datePattern = "yyyyMMdd'T'HHmmss"/>
 
@@ -14,7 +15,6 @@
     </appender>
 
     <appender name="FILE" class="ch.qos.logback.core.FileAppender">
-<!--        무슨 파일로 남길 건지 작성해 줘야한다  -->
 <!--        시간에 따라서 다른 log파일을 만들고 싶은 경우-->
         <file>logs/kdt_${bySecond}.log</file>
         <!--        계속 실행시키면 File에 로그가 계속 append된다. append를 false로 지정한다면 덮어쓴다. -->

@@ -37,7 +37,7 @@ public class Order {
 		var beforeDiscount = orderItems.stream()
 			.map(o -> o.getProductPrice() * o.getQuantity())
 			.reduce(0L, Long::sum);
-		if(voucher.isPresent()){
+		if (voucher.isPresent()) {
 			return this.voucher.get().discount(beforeDiscount);
 		}
 		return beforeDiscount;
