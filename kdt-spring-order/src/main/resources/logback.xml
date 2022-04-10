@@ -5,7 +5,10 @@
             conversionWord = "clr"
             converterClass = "org.springframework.boot.logging.logback.ColorConverter"/>
 
-    <property name = "LOG_PATTERN" value = "%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n"/>
+    <!--   clr을 사용했는데 파일에 추가로 이상한게 붙는다. -> file log와 Console log의 패턴을 다르게 설정하자 -->
+    <property name = "FILE_LOG_PATTERN" value = "%d{HH:mm:ss.SSS} [%thread] %clr(%-5level) %logger{36} - %msg%n"/>
+    <property name = "LOG_PATTERN" value = "%clr(%d{HH:mm:ss.SSS}){red} [%thread] %clr(%-5level) %logger{36} - %msg%n"/>
+
     <timestamp key="bySecond" datePattern = "yyyyMMdd'T'HHmmss"/>
 
     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
@@ -20,7 +23,7 @@
         <!--        계속 실행시키면 File에 로그가 계속 append된다. append를 false로 지정한다면 덮어쓴다. -->
 <!--        <append>false</append>-->
         <encoder>
-            <pattern>${LOG_PATTERN}</pattern>
+            <pattern>${FILE_LOG_PATTERN}</pattern>
         </encoder>
     </appender>
 
@@ -40,6 +43,7 @@
         </encoder>
     </appender>
 
+<!-- 특정 Logger에 Appender를 지정하고 싶을 때 -> ref 조심!-->
     <logger name = "org.prgms.kdt" level="info">
         <appender-ref ref="ROLLING_FILE" />
     </logger>
