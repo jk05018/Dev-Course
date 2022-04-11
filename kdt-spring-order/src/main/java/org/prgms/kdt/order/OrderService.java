@@ -11,13 +11,10 @@ import org.springframework.stereotype.Service;
 public class OrderService {
 	private final VoucherService voucherService;
 	private final OrderRepository orderRepository;
-	private final VersionProvider versionProvider;
 
-	public OrderService(VoucherService voucherService, OrderRepository orderRepository,
-		VersionProvider versionProvider) {
+	public OrderService(VoucherService voucherService, OrderRepository orderRepository) {
 		this.voucherService = voucherService;
 		this.orderRepository = orderRepository;
-		this.versionProvider = versionProvider;
 	}
 
 	public Order createOrder(UUID customerId, List<OrderItem> orderItems) {
