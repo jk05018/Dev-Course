@@ -7,6 +7,8 @@ public class FixedAmountVoucher implements Voucher {
 	private final long amount;
 
 	public FixedAmountVoucher(UUID voucherId, long amount) {
+		if(amount <= 0 || amount >= 10000000)
+			throw new IllegalArgumentException();
 		this.voucherId = voucherId;
 		this.amount = amount;
 	}
@@ -17,6 +19,9 @@ public class FixedAmountVoucher implements Voucher {
 	}
 
 	public long discount(long beforeDiscount) {
-		return beforeDiscount - amount;
+		long afterDiscount = beforeDiscount - amount;
+
+		if(afterDiscount < 0) return 0L;
+		return afterDiscount;
 	}
 }
