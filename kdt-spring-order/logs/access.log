@@ -1,0 +1,3 @@
+16:56:35.391 [main] INFO  org.prgms.kdt.KdtApplicationTests - Starting KdtApplicationTests using Java 16.0.1 on hwangseunghan-ui-MacBookPro.local with PID 5532 (started by hwangseunghan in /Users/hwangseunghan/Dropbox/Mac/Documents/dev-course/kdt-spring-order)
+16:56:35.403 [main] INFO  org.prgms.kdt.KdtApplicationTests - No active profile set, falling back to 1 default profile: "default"
+16:56:36.628 [main] INFO  org.prgms.kdt.KdtApplicationTests - Started KdtApplicationTests in 1.864 seconds (JVM running for 4.002)

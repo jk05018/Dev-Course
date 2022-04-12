@@ -1,0 +1,9 @@
+17:11:39.696 [main] INFO  org.prgms.kdt.KdtApplication - Starting KdtApplication using Java 16.0.1 on hwangseunghan-ui-MacBookPro.local with PID 4515 (/Users/hwangseunghan/Dropbox/Mac/Documents/dev-course/kdt-spring-order/target/classes started by hwangseunghan in /Users/hwangseunghan/Dropbox/Mac/Documents/dev-course/kdt-spring-order)
+17:11:39.701 [main] INFO  org.prgms.kdt.KdtApplication - The following 1 profile is active: "dev"
+17:11:40.672 [main] INFO  org.prgms.kdt.KdtApplication - Started KdtApplication in 1.713 seconds (JVM running for 3.081)
+17:11:40.679 [main] INFO  org.prgms.kdt.KdtApplication - OrderTest start
+17:11:40.679 [main] INFO  org.prgms.kdt.KdtApplication - version : v2.2.2
+17:11:40.680 [main] INFO  org.prgms.kdt.KdtApplication - minOrderAmount : 2
+17:11:40.680 [main] INFO  org.prgms.kdt.KdtApplication - support-vendors : [e, f, g, h]
+17:11:40.680 [main] INFO  org.prgms.kdt.KdtApplication - description : line1 hello world
+line2 hallo
