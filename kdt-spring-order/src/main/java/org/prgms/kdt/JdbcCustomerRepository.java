@@ -1,14 +1,12 @@
 package org.prgms.kdt;
 
-import java.nio.charset.StandardCharsets;
+import java.nio.ByteBuffer;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.sql.Timestamp;
-import java.text.MessageFormat;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -103,7 +101,7 @@ public class JdbcCustomerRepository {
 			ResultSet resultSet = statement.executeQuery();
 		) {
 			while (resultSet.next()) {
-				UUID customerId = UUID.nameUUIDFromBytes(resultSet.getBytes("customer_id"));
+				final UUID customerId = toUUID(resultSet.getBytes("customer_id"));
 				ids.add(customerId);
 			}
 		} catch (SQLException throwables) {
@@ -111,6 +109,12 @@ public class JdbcCustomerRepository {
 		}
 
 		return ids;
+	}
+
+	public static UUID toUUID(byte[] customer_ids) throws SQLException {
+		final ByteBuffer byteBuffer = ByteBuffer.wrap(customer_ids);
+		final UUID customerId = new UUID(byteBuffer.getLong(),byteBuffer.getLong());
+		return customerId;
 	}
 
 	public int insertCustomer(UUID customerId, String name, String email) {
@@ -175,12 +179,14 @@ public class JdbcCustomerRepository {
 		// final List<UUID> allName = jdbcCustomerRepository.findAllIds();
 		// allName.forEach(v -> logger.info("Found Name -> {}",v));
 		// System.out.println("====================");
+
 		final UUID customerId = UUID.randomUUID();
 		jdbcCustomerRepository.deleteAllCustomers();
 		logger.info("created customerId -> {}", customerId);
 		jdbcCustomerRepository.insertCustomer(customerId, "new-user", "new-user@gmail.com");
 		//생뚱맞은 UUID가 반환된다?> UUID 의 version이 다르다.
 		jdbcCustomerRepository.findAllIds().forEach( v -> logger.info("FOUND customerId : {}", v));
+
 		// jdbcCustomerRepository.findNamesByPreparedStatement("new-user").forEach(v -> logger.info("Found Name -> {}",v));
 		// jdbcCustomerRepository.updateCustomerName(customerId, "user_new");
 		// jdbcCustomerRepository.findNamesByPreparedStatement("user_new").forEach(v -> logger.info("Found Name -> {}",v));
