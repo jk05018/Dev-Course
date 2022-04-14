@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import org.prgms.kdt.customer.Customer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -111,6 +112,29 @@ public class JdbcCustomerRepository {
 		return ids;
 	}
 
+	public void transactionTest(Customer customer) {
+		String updateNameSql = "UPDATE customers SET name = ? WHERE customer_id = UUID_TO_BIN(?)";
+		String updateUpdateSql = "UPDATE customers SET email = ? WHERE customer_id = UUID_TO_BIN(?)";
+		try (
+			Connection connection = DriverManager.getConnection("jdbc:mysql://localhost/order_mgmt", "root",
+				"tmdgks1817@");
+			PreparedStatement updateNameStatement = connection.prepareStatement(updateNameSql);
+			PreparedStatement updateUpdateStatement = connection.prepareStatement(updateUpdateSql);
+		) {
+			// preparedStatement는 Parameter를 세팅해 준다. 인덱스는 1부
+			updateNameStatement.setString(1, customer.getName());
+			updateNameStatement.setBytes(2, customer.getCustomerId().toString().getBytes());
+			updateUpdateStatement.setString(1, customer.getEmail());
+			updateUpdateStatement.setBytes(2,customer.getCustomerId().toString().getBytes());
+
+
+			updateNameStatement.executeUpdate();
+			updateUpdateStatement.executeUpdate();
+
+		} catch (SQLException throwables) {
+			logger.error("got error whiel closing connection", throwables);
+		}
+	}
 	public static UUID toUUID(byte[] customer_ids) throws SQLException {
 		final ByteBuffer byteBuffer = ByteBuffer.wrap(customer_ids);
 		final UUID customerId = new UUID(byteBuffer.getLong(),byteBuffer.getLong());
@@ -173,12 +197,6 @@ public class JdbcCustomerRepository {
 		// preparedStatement를 사용하면 일반적ㅇ로 statement를 사용하면 수행할때마다 쿼리의 문장을 분석하고 컴파일하고 실행 단계를 거치게 된다.
 		// prepareState는 한번만 세 과정을 거친 뒤 캐쉬에 담아 계속 사용한다. 미리 statement를 만들어 놓는다. 중간에 바꿀 수 없다. 다이나믹이 아니다. 성능상 이점이 있다 세 단계를 거치지 않으므
 		final JdbcCustomerRepository jdbcCustomerRepository = new JdbcCustomerRepository();
-		// List<String> names = jdbcCustomerRepository.findNamesByPreparedStatement("tester01");
-		// names.forEach(v -> logger.info("Found Name -> {}",v));
-		// System.out.println("====================");
-		// final List<UUID> allName = jdbcCustomerRepository.findAllIds();
-		// allName.forEach(v -> logger.info("Found Name -> {}",v));
-		// System.out.println("====================");
 
 		final UUID customerId = UUID.randomUUID();
 		jdbcCustomerRepository.deleteAllCustomers();
@@ -186,12 +204,6 @@ public class JdbcCustomerRepository {
 		jdbcCustomerRepository.insertCustomer(customerId, "new-user", "new-user@gmail.com");
 		//생뚱맞은 UUID가 반환된다?> UUID 의 version이 다르다.
 		jdbcCustomerRepository.findAllIds().forEach( v -> logger.info("FOUND customerId : {}", v));
-
-		// jdbcCustomerRepository.findNamesByPreparedStatement("new-user").forEach(v -> logger.info("Found Name -> {}",v));
-		// jdbcCustomerRepository.updateCustomerName(customerId, "user_new");
-		// jdbcCustomerRepository.findNamesByPreparedStatement("user_new").forEach(v -> logger.info("Found Name -> {}",v));
-		// // jdbcCustomerRepository.deleteAllCustomers();
-		// jdbcCustomerRepository.insertCustomer(UUID.randomUUID(), "new-user", "new-user@gmail.com");
 
 
 	}
