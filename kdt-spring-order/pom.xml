@@ -32,12 +32,23 @@
         </dependency>
 
         <!-- https://mvnrepository.com/artifact/mysql/mysql-connector-java -->
-<!--        driver가 알아서 우리가 등록한 mysql driver를 등록해준다.-->
+        <!--        driver가 알아서 우리가 등록한 mysql driver를 등록해준다.-->
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
             <scope>runtime</scope>
             <version>8.0.28</version>
+        </dependency>
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.wix</groupId>
+            <artifactId>wix-embedded-mysql</artifactId>
+            <version>4.6.1</version>
+            <scope>test</scope>
         </dependency>
 
     </dependencies>

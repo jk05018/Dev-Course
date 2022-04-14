@@ -19,17 +19,14 @@ import org.slf4j.LoggerFactory;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
-@Repository
+// @Repository
 public class CustomerJdbcRepository implements CustomerRepository {
 	private static final Logger logger = LoggerFactory.getLogger(CustomerJdbcRepository.class);
 
 	private final DataSource dataSource;
-	private final JdbcTemplate jdbcTemplate;
 
-	public CustomerJdbcRepository(DataSource dataSource, JdbcTemplate jdbcTemplate,
-		JdbcTemplate jdbcTemplate1) {
+	public CustomerJdbcRepository(DataSource dataSource) {
 		this.dataSource = dataSource;
-		this.jdbcTemplate = jdbcTemplate1;
 	}
 
 	@Override

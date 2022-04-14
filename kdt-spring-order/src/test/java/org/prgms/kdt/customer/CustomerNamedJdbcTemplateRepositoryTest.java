@@ -1,26 +1,23 @@
 package org.prgms.kdt.customer;
 
+import static com.wix.mysql.EmbeddedMysql.*;
+import static com.wix.mysql.ScriptResolver.*;
 import static com.wix.mysql.config.Charset.*;
+import static com.wix.mysql.config.MysqldConfig.*;
+import static com.wix.mysql.distribution.Version.*;
 import static org.hamcrest.MatcherAssert.*;
 import static org.hamcrest.Matchers.*;
-import static org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType.*;
-import static com.wix.mysql.EmbeddedMysql.anEmbeddedMysql;
-import static com.wix.mysql.ScriptResolver.classPathScript;
-import static com.wix.mysql.distribution.Version.v8_0_11;
-import static com.wix.mysql.config.MysqldConfig.aMysqldConfig;
 
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-import java.util.concurrent.TimeUnit;
 
 import javax.sql.DataSource;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
@@ -33,7 +30,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 
 import com.wix.mysql.EmbeddedMysql;
@@ -43,10 +40,10 @@ import com.zaxxer.hikari.HikariDataSource;
 @SpringJUnitConfig
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-class CustomerJdbcTemplateRepositoryTest {
+class CustomerNamedJdbcTemplateRepositoryTest {
 
 	@Autowired
-	CustomerJdbcTemplateRepository customerJdbcTemplateRepository;
+	CustomerNamedJdbcTemplateRepository customerJdbcTemplateRepository;
 	@Autowired
 	DataSource dataSource;
 
@@ -79,6 +76,11 @@ class CustomerJdbcTemplateRepositoryTest {
 		@Bean
 		public JdbcTemplate jdbcTemplate(DataSource dataSource) {
 			return new JdbcTemplate(dataSource);
+		}
+
+		@Bean
+		public NamedParameterJdbcTemplate namedParameterJdbcTemplate(JdbcTemplate jdbcTemplate) {
+			return new NamedParameterJdbcTemplate(jdbcTemplate);
 		}
 
 	}
