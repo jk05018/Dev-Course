@@ -17,15 +17,15 @@
         </encoder>
     </appender>
 
-<!--    <appender name="FILE" class="ch.qos.logback.core.FileAppender">-->
-<!--&lt;!&ndash;        시간에 따라서 다른 log파일을 만들고 싶은 경우&ndash;&gt;-->
-<!--        <file>logs/kdt_${bySecond}.log</file>-->
-<!--        &lt;!&ndash;        계속 실행시키면 File에 로그가 계속 append된다. append를 false로 지정한다면 덮어쓴다. &ndash;&gt;-->
-<!--&lt;!&ndash;        <append>false</append>&ndash;&gt;-->
-<!--        <encoder>-->
-<!--            <pattern>${FILE_LOG_PATTERN}</pattern>-->
-<!--        </encoder>-->
-<!--    </appender>-->
+    <appender name="FILE" class="ch.qos.logback.core.FileAppender">
+<!--        시간에 따라서 다른 log파일을 만들고 싶은 경우-->
+        <file>logs/kdt_${bySecond}.log</file>
+        <!--        계속 실행시키면 File에 로그가 계속 append된다. append를 false로 지정한다면 덮어쓴다. -->
+<!--        <append>false</append>-->
+        <encoder>
+            <pattern>${FILE_LOG_PATTERN}</pattern>
+        </encoder>
+    </appender>
 
 
     <!--        어플리케이션을 구동하면 얼마나 오래갈지 모름 하루, 이틀 한달 1년 -> RollingFileAppender를 사용하여 일정 시간마다 log파일을 생성하자-->

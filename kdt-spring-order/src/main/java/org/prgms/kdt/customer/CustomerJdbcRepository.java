@@ -24,9 +24,12 @@ public class CustomerJdbcRepository implements CustomerRepository {
 	private static final Logger logger = LoggerFactory.getLogger(CustomerJdbcRepository.class);
 
 	private final DataSource dataSource;
+	private final JdbcTemplate jdbcTemplate;
 
-	public CustomerJdbcRepository(DataSource dataSource, JdbcTemplate jdbcTemplate) {
+	public CustomerJdbcRepository(DataSource dataSource, JdbcTemplate jdbcTemplate,
+		JdbcTemplate jdbcTemplate1) {
 		this.dataSource = dataSource;
+		this.jdbcTemplate = jdbcTemplate1;
 	}
 
 	@Override
