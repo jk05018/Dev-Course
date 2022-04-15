@@ -8,13 +8,14 @@ import java.util.concurrent.ConcurrentHashMap;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 
+import org.prgms.kdt.aop.TrackTime;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Repository;
 
 @Repository
-@Profile({"local", "default"})
+@Profile({"local", "default","test"})
 public class MemoryVoucherRepository implements VoucherRepository, InitializingBean, DisposableBean {
 	// 스레드 상에서도 안전하게 동작하기 위해 Concurrent Hash Map을 사용 하였다.
 	private final Map<UUID, Voucher> storage = new ConcurrentHashMap<>();
@@ -24,6 +25,7 @@ public class MemoryVoucherRepository implements VoucherRepository, InitializingB
 		return Optional.ofNullable(storage.get(voucherId));
 	}
 
+	@TrackTime
 	@Override
 	public Voucher insert(Voucher voucher) {
 		storage.put(voucher.getVoucherId(), voucher);
