@@ -15,20 +15,26 @@ import java.util.UUID;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.dao.DataAccessException;
 import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.support.DefaultTransactionDefinition;
 
 @Repository
 public class CustomerNamedJdbcTemplateRepository implements CustomerRepository {
 	private static final Logger logger = LoggerFactory.getLogger(CustomerJdbcRepository.class);
 
 	private final NamedParameterJdbcTemplate jdbcTemplate;
+	private final DataSourceTransactionManager transactionManager;
 
-	public CustomerNamedJdbcTemplateRepository(NamedParameterJdbcTemplate jdbcTemplate) {
+	public CustomerNamedJdbcTemplateRepository(NamedParameterJdbcTemplate jdbcTemplate,
+		DataSourceTransactionManager transactionManager) {
 		this.jdbcTemplate = jdbcTemplate;
+		this.transactionManager = transactionManager;
 	}
 
 	private Map<String,Object> toParamMap(Customer customer){
@@ -135,6 +141,21 @@ public class CustomerNamedJdbcTemplateRepository implements CustomerRepository {
 		}
 	}
 
+	public void testTransaction(Customer customer){
+		final TransactionStatus transaction = transactionManager.getTransaction(new DefaultTransactionDefinition());
+		try {
+			jdbcTemplate.update(
+				"UPDATE customers SET  name = :name WHERE customer_id = UUID_TO_BIN(:customerId)",
+				toParamMap(customer));
+			jdbcTemplate.update(
+				"UPDATE customers SET email = :email WHERE customer_id = UUID_TO_BIN(:customerId)",
+				toParamMap(customer));
+			transactionManager.commit(transaction);
+		}catch (DataAccessException e){
+			logger.error("Got Error", e);
+			transactionManager.rollback(transaction);
+		}
+	}
 	@Override
 	public void deleteAll() {
 		jdbcTemplate.update("delete from customers", Collections.emptyMap());

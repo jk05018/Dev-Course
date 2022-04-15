@@ -43,7 +43,7 @@ import com.zaxxer.hikari.HikariDataSource;
 @SpringJUnitConfig
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-class CustomerNamedJdbcTemplateRepositoryTest {
+class CustomerServiceTest {
 
 	@Autowired
 	CustomerNamedJdbcTemplateRepository customerJdbcTemplateRepository;
