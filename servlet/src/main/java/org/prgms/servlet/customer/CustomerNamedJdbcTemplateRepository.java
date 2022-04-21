@@ -29,21 +29,18 @@ public class CustomerNamedJdbcTemplateRepository implements CustomerRepository {
 	private static final Logger logger = LoggerFactory.getLogger(CustomerJdbcRepository.class);
 
 	private final NamedParameterJdbcTemplate jdbcTemplate;
-	private final DataSourceTransactionManager transactionManager;
 
-	public CustomerNamedJdbcTemplateRepository(NamedParameterJdbcTemplate jdbcTemplate,
-		DataSourceTransactionManager transactionManager) {
+	public CustomerNamedJdbcTemplateRepository(NamedParameterJdbcTemplate jdbcTemplate) {
 		this.jdbcTemplate = jdbcTemplate;
-		this.transactionManager = transactionManager;
 	}
 
-	private Map<String,Object> toParamMap(Customer customer){
-		return new HashMap<String,Object>() {{
-		put("customerId",customer.getCustomerId().toString().getBytes());
-		put("name",customer.getName());
-		put("email",customer.getEmail());
-		put("lastLoginAt",Timestamp.valueOf(customer.getLastLoginAt()));
-		put("createdAt",Timestamp.valueOf(customer.getCreatedAt()));
+	private Map<String, Object> toParamMap(Customer customer) {
+		return new HashMap<String, Object>() {{
+			put("customerId", customer.getCustomerId().toString().getBytes());
+			put("name", customer.getName());
+			put("email", customer.getEmail());
+			put("lastLoginAt", Timestamp.valueOf(customer.getLastLoginAt()));
+			put("createdAt", Timestamp.valueOf(customer.getCreatedAt()));
 		}};
 	}
 
@@ -85,11 +82,9 @@ public class CustomerNamedJdbcTemplateRepository implements CustomerRepository {
 		return customer;
 	}
 
-
 	public int count() {
 		return jdbcTemplate.queryForObject("select count(*) from customers", Collections.emptyMap(), Integer.class);
 	}
-
 
 	@Override
 	public List<Customer> findAll() {
@@ -107,7 +102,7 @@ public class CustomerNamedJdbcTemplateRepository implements CustomerRepository {
 			return Optional.ofNullable(
 				jdbcTemplate.queryForObject("select * from customers WHERE customer_id = UUID_TO_BIN(:customerId)",
 					Collections.singletonMap("customerId", customerId.toString().getBytes()),
-				customerRowMapper));
+					customerRowMapper));
 		} catch (EmptyResultDataAccessException e) {
 			logger.error(e.getMessage());
 			return Optional.empty();
@@ -120,7 +115,7 @@ public class CustomerNamedJdbcTemplateRepository implements CustomerRepository {
 		try {
 			return Optional.ofNullable(
 				jdbcTemplate.queryForObject("select * from customers where name = :name",
-					Collections.singletonMap("name",name),
+					Collections.singletonMap("name", name),
 					customerRowMapper));
 		} catch (EmptyResultDataAccessException e) {
 			logger.error("Got Empty result find By name");
@@ -133,7 +128,7 @@ public class CustomerNamedJdbcTemplateRepository implements CustomerRepository {
 		try {
 			return Optional.ofNullable(
 				jdbcTemplate.queryForObject("select * from customers where email = :email",
-					Collections.singletonMap("email",email),
+					Collections.singletonMap("email", email),
 					customerRowMapper));
 		} catch (EmptyResultDataAccessException e) {
 			logger.error("Got Empty result find by Email");
@@ -141,21 +136,6 @@ public class CustomerNamedJdbcTemplateRepository implements CustomerRepository {
 		}
 	}
 
-	public void testTransaction(Customer customer){
-		final TransactionStatus transaction = transactionManager.getTransaction(new DefaultTransactionDefinition());
-		try {
-			jdbcTemplate.update(
-				"UPDATE customers SET  name = :name WHERE customer_id = UUID_TO_BIN(:customerId)",
-				toParamMap(customer));
-			jdbcTemplate.update(
-				"UPDATE customers SET email = :email WHERE customer_id = UUID_TO_BIN(:customerId)",
-				toParamMap(customer));
-			transactionManager.commit(transaction);
-		}catch (DataAccessException e){
-			logger.error("Got Error", e);
-			transactionManager.rollback(transaction);
-		}
-	}
 	@Override
 	public void deleteAll() {
 		jdbcTemplate.update("delete from customers", Collections.emptyMap());
