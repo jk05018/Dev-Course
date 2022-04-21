@@ -15,6 +15,7 @@ import java.util.UUID;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.annotation.Primary;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.RowMapper;
@@ -25,6 +26,7 @@ import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
 
 @Repository
+@Primary
 public class CustomerNamedJdbcTemplateRepository implements CustomerRepository {
 	private static final Logger logger = LoggerFactory.getLogger(CustomerJdbcRepository.class);
 

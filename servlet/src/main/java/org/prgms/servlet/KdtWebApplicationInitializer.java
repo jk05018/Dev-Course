@@ -38,7 +38,7 @@ public class KdtWebApplicationInitializer implements WebApplicationInitializer {
 		final DispatcherServlet dispatcherServlet = new DispatcherServlet(applicationContext);
 
 		final ServletRegistration.Dynamic registration = servletContext.addServlet("test", dispatcherServlet);
-		registration.addMapping("/*");
+		registration.addMapping("/");
 		registration.setLoadOnStartup(1);
 
 	}
