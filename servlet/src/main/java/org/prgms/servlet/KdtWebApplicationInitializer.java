@@ -8,7 +8,6 @@ import javax.sql.DataSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.jdbc.DataSourceBuilder;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -21,8 +20,10 @@ import org.springframework.web.WebApplicationInitializer;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
 import org.springframework.web.servlet.DispatcherServlet;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.ViewResolverRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.web.servlet.resource.EncodedResourceResolver;
 
 import com.zaxxer.hikari.HikariDataSource;
 
@@ -54,7 +55,15 @@ public class KdtWebApplicationInitializer implements WebApplicationInitializer {
 		@Override
 		public void configureViewResolvers(ViewResolverRegistry registry) {
 			registry.jsp();
+		}
 
+		@Override
+		public void addResourceHandlers(ResourceHandlerRegistry registry) {
+			registry.addResourceHandler("/resources/**") // 이런 resource에 대해서 요청이 오면 우리
+				.addResourceLocations("/resources/")
+				.setCachePeriod(60)
+				.resourceChain(true)
+				.addResolver(new EncodedResourceResolver()); // resource에 대한  location 셋압?
 		}
 
 		@Bean
