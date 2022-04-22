@@ -12,7 +12,7 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 public class CustomerController {
 
-	private final CustomerService customerService;
+	private final CustomerService customerService	;
 
 	public CustomerController(CustomerService customerService) {
 		this.customerService = customerService;
@@ -21,7 +21,7 @@ public class CustomerController {
 	@RequestMapping(value = "/customers", method = RequestMethod.GET)
 	public ModelAndView findCustomers(){
 		final List<Customer> allCustomers = customerService.getAllCustomers();
-		return new ModelAndView("customer", Map.of("serverTime", LocalDateTime.now(), "customers", allCustomers));
+		return new ModelAndView("views/customers", Map.of("serverTime", LocalDateTime.now(), "customers", allCustomers));
 	}
 
 }

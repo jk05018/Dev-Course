@@ -7,7 +7,10 @@ import javax.sql.DataSource;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeansException;
 import org.springframework.boot.jdbc.DataSourceBuilder;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -24,6 +27,9 @@ import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
 import org.springframework.web.servlet.config.annotation.ViewResolverRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.resource.EncodedResourceResolver;
+import org.thymeleaf.spring5.SpringTemplateEngine;
+import org.thymeleaf.spring5.templateresolver.SpringResourceTemplateResolver;
+import org.thymeleaf.spring5.view.ThymeleafViewResolver;
 
 import com.zaxxer.hikari.HikariDataSource;
 
@@ -48,13 +54,28 @@ public class KdtWebApplicationInitializer implements WebApplicationInitializer {
 	@Configuration
 	@ComponentScan(basePackages = "org.prgms.servlet.customer")
 	@EnableTransactionManagement
-	static class AppConfig implements WebMvcConfigurer {
+	static class AppConfig implements WebMvcConfigurer, ApplicationContextAware {
+
+		ApplicationContext applicationContext;
 
 		// @EnableWebMvc로 자동으로 설정되게 해 놓았지만
 		// @WebMvcConfigurer를 사용하면 설정할 수 있다./
 		@Override
 		public void configureViewResolvers(ViewResolverRegistry registry) {
-			registry.jsp();
+			registry.jsp().viewNames(new String[] {"jsp/*"});
+			// jsp는 prefix와 suffixfmf wlwjdgo wnwl dksgdkeh ehlsmsrk?
+
+			final SpringResourceTemplateResolver springResourceTemplateResolver = new SpringResourceTemplateResolver();
+			final SpringTemplateEngine springTemplateEngine = new SpringTemplateEngine();
+			springResourceTemplateResolver.setApplicationContext(applicationContext);
+			springResourceTemplateResolver.setPrefix("/WEB-INF/");
+			springResourceTemplateResolver.setSuffix(".html");
+			springTemplateEngine.setTemplateResolver(springResourceTemplateResolver);
+			final ThymeleafViewResolver thymeleafViewResolver = new ThymeleafViewResolver();
+			thymeleafViewResolver.setTemplateEngine(springTemplateEngine); // template enginteㅇㅡㄹ 추가해줘야한다.
+			thymeleafViewResolver.setOrder(1);
+			thymeleafViewResolver.setViewNames(new String[] {"views/*"});// views 하위에 있는 데이터는 모두 thymelear를 쓰는 것이다?
+			registry.viewResolver(thymeleafViewResolver);
 		}
 
 		@Override
@@ -95,6 +116,11 @@ public class KdtWebApplicationInitializer implements WebApplicationInitializer {
 		@Bean
 		public PlatformTransactionManager platformTransactionManager(DataSource dataSource) {
 			return new DataSourceTransactionManager(dataSource);
+		}
+
+		@Override
+		public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+			this.applicationContext = applicationContext;
 		}
 	}
 
