@@ -1,5 +1,7 @@
 package org.prgms.servlet;
 
+import java.util.List;
+
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRegistration;
@@ -16,9 +18,12 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.FilterType;
+import org.springframework.http.converter.HttpMessageConverter;
+import org.springframework.http.converter.xml.MarshallingHttpMessageConverter;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
+import org.springframework.oxm.xstream.XStreamMarshaller;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.WebApplicationInitializer;
@@ -159,6 +164,22 @@ public class KdtWebApplicationInitializer implements WebApplicationInitializer {
 		@Override
 		public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
 			this.applicationContext = applicationContext;
+		}
+
+		@Override
+		public void extendMessageConverters(List<HttpMessageConverter<?>> converters) {
+			// default는 jackson? json> 우리가 설정하는 것으로 싹 다 바뀐다.
+			//xml로 변환해 보자
+			final MarshallingHttpMessageConverter messageConverter = new MarshallingHttpMessageConverter();
+			final XStreamMarshaller xStreamMarshaller = new XStreamMarshaller();
+			messageConverter.setMarshaller(xStreamMarshaller);
+			messageConverter.setUnmarshaller(xStreamMarshaller);
+
+			converters.add(0,messageConverter);
+			// 이렇게 추가하면 messageConverter가 다 날라가기 때문에 jackson converter를 추가해 줘야한다.
+			// configureMessageConvertor 말고 extendMessageConverter를 이용하면 방지 할 수 있다.
+			// 추가할 때 index를 줘서 맨 앞에서 동작할 수 있게 한다.
+
 		}
 	}
 

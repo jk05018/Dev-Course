@@ -11,6 +11,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
@@ -22,8 +23,15 @@ public class CustomerController {
 		this.customerService = customerService;
 	}
 
+	@GetMapping(value = "/api/v1/customers")
+	@ResponseBody
+	public List<Customer> findCustomers() {
+		return customerService.getAllCustomers();
+
+	}
+
 	@GetMapping(value = "/customers")
-	public ModelAndView findCustomers() {
+	public ModelAndView viewCustomersPage() {
 		final List<Customer> allCustomers = customerService.getAllCustomers();
 		return new ModelAndView("views/customers",
 			Map.of("serverTime", LocalDateTime.now(), "customers", allCustomers));
