@@ -30,6 +30,7 @@ import org.springframework.web.WebApplicationInitializer;
 import org.springframework.web.context.ContextLoaderListener;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
 import org.springframework.web.servlet.DispatcherServlet;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.ViewResolverRegistry;
@@ -139,17 +140,17 @@ public class KdtWebApplicationInitializer implements WebApplicationInitializer {
 			registry.jsp().viewNames(new String[] {"jsp/*"});
 			// jsp는 prefix와 suffixfmf wlwjdgo wnwl dksgdkeh ehlsmsrk?
 
-			final SpringResourceTemplateResolver springResourceTemplateResolver = new SpringResourceTemplateResolver();
-			final SpringTemplateEngine springTemplateEngine = new SpringTemplateEngine();
-			springResourceTemplateResolver.setApplicationContext(applicationContext);
-			springResourceTemplateResolver.setPrefix("/WEB-INF/");
-			springResourceTemplateResolver.setSuffix(".html");
-			springTemplateEngine.setTemplateResolver(springResourceTemplateResolver);
-			final ThymeleafViewResolver thymeleafViewResolver = new ThymeleafViewResolver();
-			thymeleafViewResolver.setTemplateEngine(springTemplateEngine); // template enginteㅇㅡㄹ 추가해줘야한다.
-			thymeleafViewResolver.setOrder(1);
-			thymeleafViewResolver.setViewNames(new String[] {"views/*"});// views 하위에 있는 데이터는 모두 thymelear를 쓰는 것이다?
-			registry.viewResolver(thymeleafViewResolver);
+			// final SpringResourceTemplateResolver springResourceTemplateResolver = new SpringResourceTemplateResolver();
+			// final SpringTemplateEngine springTemplateEngine = new SpringTemplateEngine();
+			// springResourceTemplateResolver.setApplicationContext(applicationContext);
+			// springResourceTemplateResolver.setPrefix("/WEB-INF/");
+			// springResourceTemplateResolver.setSuffix(".html");
+			// springTemplateEngine.setTemplateResolver(springResourceTemplateResolver);
+			// final ThymeleafViewResolver thymeleafViewResolver = new ThymeleafViewResolver();
+			// thymeleafViewResolver.setTemplateEngine(springTemplateEngine); // template enginteㅇㅡㄹ 추가해줘야한다.
+			// thymeleafViewResolver.setOrder(1);
+			// thymeleafViewResolver.setViewNames(new String[] {"views/*"});// views 하위에 있는 데이터는 모두 thymelear를 쓰는 것이다?
+			// registry.viewResolver(thymeleafViewResolver);
 		}
 
 		@Override
@@ -179,8 +180,16 @@ public class KdtWebApplicationInitializer implements WebApplicationInitializer {
 			// 이렇게 추가하면 messageConverter가 다 날라가기 때문에 jackson converter를 추가해 줘야한다.
 			// configureMessageConvertor 말고 extendMessageConverter를 이용하면 방지 할 수 있다.
 			// 추가할 때 index를 줘서 맨 앞에서 동작할 수 있게 한다.
+		}
 
+		@Override
+		public void addCorsMappings(CorsRegistry registry) {
+			registry.addMapping("/api/**")
+				.allowedMethods("GET", "POST") // 메서드 단위로 지원하겠다.
+				.allowedOrigins("*"); // 전체를 다 허용하겠다.
 		}
 	}
+
+
 
 }
