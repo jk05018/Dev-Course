@@ -9,3 +9,8 @@ spring:
 server:
   servlet:
     context-path: /kdt
+
+logging:
+  level:
+    org:
+      springframework: DEBUG

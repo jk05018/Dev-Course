@@ -1,4 +1,4 @@
-package org.prgms.servlet.customer;
+package org.prgms.servlet.customer.model;
 
 import java.time.LocalDateTime;
 import java.util.UUID;

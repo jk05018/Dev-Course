@@ -1,4 +1,4 @@
-package org.prgms.servlet.customer;
+package org.prgms.servlet.customer.repository;
 
 import java.nio.ByteBuffer;
 import java.sql.Connection;
@@ -14,6 +14,7 @@ import java.util.UUID;
 
 import javax.sql.DataSource;
 
+import org.prgms.servlet.customer.model.Customer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

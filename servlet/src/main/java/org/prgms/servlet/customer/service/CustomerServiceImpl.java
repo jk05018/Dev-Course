@@ -1,10 +1,12 @@
-package org.prgms.servlet.customer;
+package org.prgms.servlet.customer.service;
 
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+import org.prgms.servlet.customer.repository.CustomerRepository;
+import org.prgms.servlet.customer.model.Customer;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

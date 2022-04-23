@@ -1,7 +1,9 @@
-package org.prgms.servlet.customer;
+package org.prgms.servlet.customer.controller;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
+
+import org.prgms.servlet.customer.model.Customer;
 
 public record CustomerDto(
 	UUID customerId,

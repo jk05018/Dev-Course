@@ -1,4 +1,4 @@
-package org.prgms.servlet.customer;
+package org.prgms.servlet.customer.repository;
 
 import java.nio.ByteBuffer;
 import java.sql.ResultSet;
@@ -6,25 +6,41 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.text.MessageFormat;
 import java.time.LocalDateTime;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
+import org.prgms.servlet.customer.model.Customer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.annotation.Primary;
 import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public class CustomerJdbcTemplateRepository implements CustomerRepository {
+@Primary
+public class CustomerNamedJdbcTemplateRepository implements CustomerRepository {
 	private static final Logger logger = LoggerFactory.getLogger(CustomerJdbcRepository.class);
 
-	private final JdbcTemplate jdbcTemplate;
+	private final NamedParameterJdbcTemplate jdbcTemplate;
 
-	public CustomerJdbcTemplateRepository(JdbcTemplate jdbcTemplate) {
+	public CustomerNamedJdbcTemplateRepository(NamedParameterJdbcTemplate jdbcTemplate) {
 		this.jdbcTemplate = jdbcTemplate;
+	}
+
+	private Map<String, Object> toParamMap(Customer customer) {
+		return new HashMap<String, Object>() {{
+			put("customerId", customer.getCustomerId().toString().getBytes());
+			put("name", customer.getName());
+			put("email", customer.getEmail());
+			put("lastLoginAt", Timestamp.valueOf(customer.getLastLoginAt()));
+			put("createdAt", Timestamp.valueOf(customer.getCreatedAt()));
+		}};
 	}
 
 	private static final RowMapper<Customer> customerRowMapper = (resultSet, i) -> {
@@ -41,15 +57,11 @@ public class CustomerJdbcTemplateRepository implements CustomerRepository {
 
 	@Override
 	public Customer insert(Customer customer) {
+
 		final int insertedRow = jdbcTemplate.update(
-			"INSERT INTO customers(customer_id, name, email, last_login_at, created_at) VALUES"
-				+ "(UUID_TO_BIN(?),?,?,?,?)",
-			customer.getCustomerId().toString().getBytes(),
-			customer.getName(),
-			customer.getEmail(),
-			Timestamp.valueOf(customer.getLastLoginAt()),
-			Timestamp.valueOf(customer.getCreatedAt()));
-		if(insertedRow != 1){
+			"INSERT INTO customers(customer_id, name, email, last_login_at, created_at) VALUES (UUID_TO_BIN(:customerId),:name,:email,:lastLoginAt,:createdAt)",
+			toParamMap(customer));
+		if (insertedRow != 1) {
 			throw new RuntimeException("Noting was Inserted");
 		}
 
@@ -60,17 +72,17 @@ public class CustomerJdbcTemplateRepository implements CustomerRepository {
 	@Override
 	public Customer update(Customer customer) {
 		final int updatedRow = jdbcTemplate.update(
-			"UPDATE customers SET  name = ?, email = ?, last_login_at = ?, created_at = ? WHERE customer_id = UUID_TO_BIN(?)",
-			customer.getName(),
-			customer.getEmail(),
-			Timestamp.valueOf(customer.getLastLoginAt()),
-			Timestamp.valueOf(customer.getCreatedAt()),
-			customer.getCustomerId().toString().getBytes());
-		if(updatedRow != 1){
+			"UPDATE customers SET  name = :name, email = :email, last_login_at = :lastLoginAt, created_at = :createdAt WHERE customer_id = UUID_TO_BIN(:customerId)",
+			toParamMap(customer));
+		if (updatedRow != 1) {
 			logger.error(MessageFormat.format("customer not updated customer_id : {0}", customer.getCustomerId()));
 		}
 
 		return customer;
+	}
+
+	public int count() {
+		return jdbcTemplate.queryForObject("select count(*) from customers", Collections.emptyMap(), Integer.class);
 	}
 
 	@Override
@@ -84,25 +96,27 @@ public class CustomerJdbcTemplateRepository implements CustomerRepository {
 		// queryForObject는 preparedStatement가 만들어진다.
 		// empty 이거나 1보다 크다면 nullableSingleResult 메서드에 걸려서 예외가 발생한다.
 		// query가 타고 타고 들어가서 Execute(con 획득, 수행, 반납) 호출
-		try{
-			return Optional.of(jdbcTemplate.queryForObject("select * from customers WHERE customer_id = UUID_TO_BIN(?)", customerRowMapper,
-				customerId.toString().getBytes()));
-		}catch (EmptyResultDataAccessException e){
+
+		try {
+			return Optional.ofNullable(
+				jdbcTemplate.queryForObject("select * from customers WHERE customer_id = UUID_TO_BIN(:customerId)",
+					Collections.singletonMap("customerId", customerId.toString().getBytes()),
+					customerRowMapper));
+		} catch (EmptyResultDataAccessException e) {
 			logger.error(e.getMessage());
 			return Optional.empty();
 		}
 
 	}
 
-	public int count(){
-		return jdbcTemplate.queryForObject("select count(*) from customers", Integer.class);
-	}
-
 	@Override
 	public Optional<Customer> findByName(String name) {
-		try{
-			return Optional.of(jdbcTemplate.queryForObject("select * from customers where name = ?", customerRowMapper, name));
-		}catch (EmptyResultDataAccessException e){
+		try {
+			return Optional.ofNullable(
+				jdbcTemplate.queryForObject("select * from customers where name = :name",
+					Collections.singletonMap("name", name),
+					customerRowMapper));
+		} catch (EmptyResultDataAccessException e) {
 			logger.error("Got Empty result find By name");
 			return Optional.empty();
 		}
@@ -110,9 +124,12 @@ public class CustomerJdbcTemplateRepository implements CustomerRepository {
 
 	@Override
 	public Optional<Customer> findByEmail(String email) {
-		try{
-			return Optional.of(jdbcTemplate.queryForObject("select * from customers where email = ?", customerRowMapper, email));
-		}catch (EmptyResultDataAccessException e){
+		try {
+			return Optional.ofNullable(
+				jdbcTemplate.queryForObject("select * from customers where email = :email",
+					Collections.singletonMap("email", email),
+					customerRowMapper));
+		} catch (EmptyResultDataAccessException e) {
 			logger.error("Got Empty result find by Email");
 			return Optional.empty();
 		}
@@ -120,7 +137,7 @@ public class CustomerJdbcTemplateRepository implements CustomerRepository {
 
 	@Override
 	public void deleteAll() {
-		jdbcTemplate.update("delete from customers");
+		jdbcTemplate.update("delete from customers", Collections.emptyMap());
 	}
 
 	public static UUID toUUID(byte[] customer_ids) throws SQLException {
