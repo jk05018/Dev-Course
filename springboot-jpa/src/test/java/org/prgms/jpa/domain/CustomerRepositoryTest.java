@@ -5,6 +5,9 @@ import static org.assertj.core.api.Assertions.*;
 import java.util.List;
 import java.util.Optional;
 
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.EntityTransaction;
 import javax.transaction.Transactional;
 
 import org.assertj.core.api.Assertions;
@@ -19,6 +22,9 @@ import lombok.extern.slf4j.Slf4j;
 @SpringBootTest
 @Transactional
 class CustomerRepositoryTest {
+
+	@Autowired
+	EntityManagerFactory emf;
 
 	@Autowired
 	CustomerRepository repository;
@@ -84,5 +90,29 @@ class CustomerRepositoryTest {
 
 		// Then
 		assertThat(selectedCustomers.size()).isEqualTo(2);
+	}
+
+	@DisplayName("1차 캐시 조회")
+	@Test
+	void test(){
+		// given
+		final EntityManager em = emf.createEntityManager();
+		final EntityTransaction transaction = em.getTransaction();
+		transaction.begin();
+
+		Customer customer = new Customer();
+		customer.setId(1L);
+		customer.setFirstName("jihoon");
+		customer.setLastName("lee");
+
+		em.persist(customer);
+		transaction.commit();
+		//when
+		// 1차 캐시에서 나오기 때문에 조회 쿼리가 날라가지 않을 것이다. -> 확인
+		final Customer findCustomer = em.find(Customer.class, 1L);
+
+		//then
+
+
 	}
 }
