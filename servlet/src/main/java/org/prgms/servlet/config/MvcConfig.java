@@ -1,6 +1,7 @@
 package org.prgms.servlet.config;
 
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.converter.HttpMessageConverter;
@@ -29,4 +30,5 @@ public class MvcConfig implements WebMvcConfigurer {
 
 		converters.add(0, messageConverter);
 	}
+	
 }
