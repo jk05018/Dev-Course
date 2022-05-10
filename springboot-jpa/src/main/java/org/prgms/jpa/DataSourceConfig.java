@@ -50,6 +50,7 @@ public class DataSourceConfig {
 
 		Properties properties = new Properties();
 		properties.putAll(jpaProperties.getProperties());
+		// JPA Properties에 create-drop DDL 생성에 관한 것을 넣어
 		em.setJpaProperties(properties);
 
 		return em;
