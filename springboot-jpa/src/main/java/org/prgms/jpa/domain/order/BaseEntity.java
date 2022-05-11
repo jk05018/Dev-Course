@@ -5,8 +5,11 @@ import java.time.LocalDateTime;
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
 
-@MappedSuperclass
+import lombok.Getter;
+import lombok.Setter;
 
+@MappedSuperclass
+@Getter @Setter
 public class BaseEntity {
 
 	@Column(name = "created_by")

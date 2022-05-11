@@ -17,10 +17,10 @@ import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.PlatformTransactionManager;
 
 
-@Configuration
+// @Configuration
 public class DataSourceConfig {
 
-	@Bean
+/*	@Bean
 	DataSource dataSource() {
 		DriverManagerDataSource dataSource = new DriverManagerDataSource();
 		dataSource.setDriverClassName("org.h2.Driver");
@@ -61,6 +61,6 @@ public class DataSourceConfig {
 		JpaTransactionManager transactionManager = new JpaTransactionManager();
 		transactionManager.setEntityManagerFactory(entityManagerFactory.getObject());
 		return transactionManager;
-	}
+	}*/
 
 }
