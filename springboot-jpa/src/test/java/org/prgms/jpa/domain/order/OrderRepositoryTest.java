@@ -1,7 +1,5 @@
 package org.prgms.jpa.domain.order;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 import java.time.LocalDateTime;
 import java.util.UUID;
 
@@ -23,7 +21,7 @@ class OrderRepositoryTest {
 		Order order = new Order();
 		order.setUuid(UUID.randomUUID().toString());
 		order.setOrderStatus(OrderStatus.OPENED);
-		order.setOrderDateTime(LocalDateTime.now());
+		order.setOrderDatetime(LocalDateTime.now());
 		order.setMemo("----");
 		order.setCreatedBy("seunghan hwang");
 		order.setCratedAt(LocalDateTime.now());

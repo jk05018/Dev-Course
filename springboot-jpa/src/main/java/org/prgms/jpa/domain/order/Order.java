@@ -1,9 +1,11 @@
 package org.prgms.jpa.domain.order;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
-import java.util.UUID;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -13,9 +15,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
-
-import com.fasterxml.jackson.databind.ser.Serializers;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -35,7 +36,7 @@ public class Order extends BaseEntity {
 	private OrderStatus orderStatus;
 
 	@Column(name = "order_datetime", columnDefinition = "TIMESTAMP")
-	private LocalDateTime orderDateTime;
+	private LocalDateTime orderDatetime;
 
 	@Lob
 	private String memo;
@@ -48,6 +49,10 @@ public class Order extends BaseEntity {
 	// JoinColumn에 따로 명시하지 않을 경우 default로 우리가 명시한 필드명 + under_bar(_) + pk값을 따라간다 예) member_id
 	private Member member;
 
+
+	@OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
+	private List<OrderItem> orderItems = new ArrayList<>();
+
 	// 양방향 관계에서는 연관관계 편의 메서드를 제공한다.
 	// 이거 잘 이해해보
 	public void setMember(Member member){
@@ -57,6 +62,10 @@ public class Order extends BaseEntity {
 
 		this.member = member;
 		member.getOrders().add(this);
+	}
+
+	public void addOrderItem(OrderItem orderItem){
+		orderItem.setOrder(this);
 	}
 
 }
