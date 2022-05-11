@@ -13,3 +13,10 @@ spring:
       hibernate:
         format_sql: true
     open-in-view: false
+# 먼역 글자가 깨질 때 다음 설정을 하여라
+server:
+  servlet:
+    encoding:
+      charset: UTF-8
+      enabled: true
+      force: true

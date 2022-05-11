@@ -1,11 +1,16 @@
 package org.prgms.jpa.order.service;
 
+import java.util.List;
+
 import javax.transaction.Transactional;
 
 import org.prgms.jpa.domain.order.Order;
 import org.prgms.jpa.domain.order.OrderRepository;
 import org.prgms.jpa.order.convertor.OrderConvertor;
 import org.prgms.jpa.order.dto.OrderDto;
+import org.springframework.data.crossstore.ChangeSetPersister;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
@@ -37,11 +42,22 @@ public class OrderService {
 
 	}
 
-	public void findAll(){
+	// 영속회된 엔터티를 관리하기 위해서는 엔터티 관리 매니저로 관리 영역을 묶어줘야 되는데
+	@Transactional
+	public OrderDto findOne(String uuid) throws ChangeSetPersister.NotFoundException {
+		// 1. 조회를 위한 키값 인자로 받기
+		// 2. orderRepository.findById(uuid)를 통해 조회 (영속화된 entity)
+		// 3. entity -> dto로 변환
+		return orderRepository.findById(uuid)
+			.map(convertor::convertOrderDto)
+			.orElseThrow(() -> new ChangeSetPersister.NotFoundException());
+
 
 	}
 
-	public void findOne(){
-
+	@Transactional
+	public Page<OrderDto> findOrders(Pageable pageable){ // jpa는 Pagable이라는ㄴ 객체를 지원 한다.
+		return orderRepository.findAll(pageable)
+			.map(convertor::convertOrderDto);
 	}
 }

@@ -18,6 +18,9 @@ import org.prgms.jpa.order.dto.OrderDto;
 import org.prgms.jpa.order.dto.OrderItemDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.crossstore.ChangeSetPersister;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -34,6 +37,7 @@ class OrderServiceTest {
 	String uuid = UUID.randomUUID().toString();
 
 	// @BeforeEach
+	@BeforeEach
 	void setUp() {
 		// 이렇게 반복되는 생성작업은 beforeEach로 빼 줘도 되겠구나나		// Given
 		OrderDto orderDto = OrderDto.builder()
@@ -71,57 +75,23 @@ class OrderServiceTest {
 		log.info("UUID:{}", uuid);
 	}
 
-	// @AfterEach
+	@AfterEach
 	void tearDown() {
 		orderRepository.deleteAll();
 	}
 
 	@Test
-	void name() {
-		OrderDto orderDto = OrderDto.builder()
-			.uuid(uuid)
-			.memo("문앞 보관 해주세요.")
-			.orderDatetime(LocalDateTime.now())
-			.orderStatus(OrderStatus.OPENED)
-			.memberDto(
-				MemberDto.builder()
-					.name("강홍구")
-					.nickName("guppy.kang")
-					.address("서울시 동작구만 움직이면 쏜다.")
-					.age(33)
-					.description("---")
-					.build()
-			)
-			.orderItemDtos(List.of(
-				OrderItemDto.builder()
-					.price(1000)
-					.quantity(100)
-					.itemDtos(List.of(
-						ItemDto.builder()
-							.type(ItemType.FOOD)
-							.chef("백종원")
-							.price(1000)
-							.build()
-					))
-					.build()
-			))
-			.build();
-		// When
-		String savedUUID = orderService.save(orderDto);
-
-		log.info("{}", savedUUID);
+	void findOne() throws ChangeSetPersister.NotFoundException {
+		log.info("uuid:{}", uuid);
+		OrderDto one = orderService.findOne(uuid);
+		log.info("{}", one.getUuid());
 	}
 
-	// @Test
-	// void findAll() {
-	// 	Page<OrderDto> orders = orderService.findOrders(PageRequest.of(0, 10));
-	// 	log.info("{}", orders);
-	// }
-	//
-	// @Test
-	// void findOne() throws NotFoundException {
-	// 	log.info("uuid:{}", uuid);
-	// 	OrderDto one = orderService.findOne(uuid);
-	// 	log.info("{}", one);
-	// }
+
+	@Test
+	void findAll() {
+		Page<OrderDto> orders = orderService.findOrders(PageRequest.of(0, 10));
+		log.info("{}", orders);
+	}
+
 }

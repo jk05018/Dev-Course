@@ -38,7 +38,7 @@ public class OrderItem extends BaseEntity{
 	@OneToMany(mappedBy = "orderItem", cascade = CascadeType.ALL)
 	private List<Item> items = new ArrayList<>();
 
-	// 연관관계 편의 메서드 START
+	// 연관관계 편의 메서드 START TODO 연관관계 편의 메서드 감좀 잡기
 	public void setOrder(Order order) {
 		if (Objects.nonNull(this.order)) {
 			this.order.getOrderItems().remove(this);
