@@ -21,7 +21,7 @@ import lombok.Setter;
 @Table(name = "member")
 public class Member {
 
-	@Id @GeneratedValue(strategy = GenerationType.SEQUENCE)
+	@Id @GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 
 	@Column(name = "name", nullable = false, length = 30)
@@ -36,15 +36,18 @@ public class Member {
 	@Column(name = "address" ,nullable = false)
 	private String address;
 
-	@Column(name = "description")
+	@Column(name = "description" , nullable = true)
 	private String description;
 
 	@OneToMany(mappedBy = "member") // 필드 값을 넣어
 	private List<Order> orders = new ArrayList<>();
 
+	// 연관관계 편의 메서드 START
 	public void addOrder(Order order){
 		order.setMember(this);
 	}
+	// 연관관계 편의 메서드 END
+
 
 
 }

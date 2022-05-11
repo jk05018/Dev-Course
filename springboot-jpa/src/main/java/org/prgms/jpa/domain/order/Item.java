@@ -27,7 +27,7 @@ import lombok.Setter;
 public abstract class Item {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE)
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 
 	private int price;
@@ -39,7 +39,7 @@ public abstract class Item {
 
 	// 연관관계 편의 메서드 START
 	public void setOrderItem(OrderItem orderItem) {
-		if (Objects.nonNull(orderItem)) {
+		if (Objects.nonNull(this.orderItem)) {
 			this.orderItem.getItems().remove(this);
 		}
 

@@ -22,10 +22,10 @@ import lombok.Setter;
 @Getter
 @Setter
 @Table(name = "order_item")
-public class OrderItem {
+public class OrderItem extends BaseEntity{
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE)
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 
 	private int price;
@@ -40,8 +40,8 @@ public class OrderItem {
 
 	// 연관관계 편의 메서드 START
 	public void setOrder(Order order) {
-		if (Objects.nonNull(order)) {
-			order.getOrderItems().remove(this);
+		if (Objects.nonNull(this.order)) {
+			this.order.getOrderItems().remove(this);
 		}
 
 		this.order = order;

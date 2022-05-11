@@ -44,13 +44,13 @@ public class Order extends BaseEntity {
 	@Column(name = "member_id" , insertable = false, updatable = false)
 	private Long memberId;
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@JoinColumn(name = "member_id", referencedColumnName = "id")
 	// JoinColumn에 따로 명시하지 않을 경우 default로 우리가 명시한 필드명 + under_bar(_) + pk값을 따라간다 예) member_id
 	private Member member;
 
 
-	@OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<OrderItem> orderItems = new ArrayList<>();
 
 	// 양방향 관계에서는 연관관계 편의 메서드를 제공한다.

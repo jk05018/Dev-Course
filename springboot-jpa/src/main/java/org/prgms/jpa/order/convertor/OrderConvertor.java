@@ -21,6 +21,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class OrderConvertor {
 
+	// DTO -> ENtity로 바꿔주는 역할
 	public Order convertOrder(OrderDto orderDto) {
 		Order order = new Order();
 		order.setUuid(orderDto.getUuid());

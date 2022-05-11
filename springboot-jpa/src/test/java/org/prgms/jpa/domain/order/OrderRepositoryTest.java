@@ -29,7 +29,7 @@ class OrderRepositoryTest {
 		orderRepository.save(order);
 
 		orderRepository.findAllByOrderStatus(OrderStatus.OPENED);
-		orderRepository.findAllByOrderStatusOrderByOrderDateTime(OrderStatus.OPENED);
+		orderRepository.findAllByOrderStatusOrderByOrderDatetime(OrderStatus.OPENED);
 
 	}
 }
