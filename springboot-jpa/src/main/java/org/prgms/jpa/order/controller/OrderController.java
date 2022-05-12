@@ -28,7 +28,7 @@ public class OrderController {
 
 	@ExceptionHandler(Exception.class)
 	public ApiResponse<String> internalServerErrorHandler(Exception e){
-		return ApiResponse.fail(404, e.getMessage());
+		return ApiResponse.fail(500, e.getMessage());
 	}
 
 	@PostMapping("/orders")

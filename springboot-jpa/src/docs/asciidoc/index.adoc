@@ -1,0 +1,18 @@
+:hardbreaks:
+ifndef::snippets[]
+:snippets: ../../../target/generated-snippets
+endif::[]
+// 머스타치 문법을 따른다
+
+== 주문
+
+== 주문 생성
+
+== /order/{uuid}
+.Request
+include::{snippets}/order.save/http-request.adoc[]
+include::{snippets}/order.save/request-fields.adoc[]
+
+.Request
+include::{snippets}/order.save/http-response.adoc[]
+include::{snippets}/order.save/request-fields.adoc[]
