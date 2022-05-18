@@ -13,4 +13,12 @@ spring:
     encoding: UTF-8
     cache-duration: PT1H
 server:
-  port: 8080
+  port: 443
+  ssl:
+    enabled: true
+    key-alias: my_keystore
+    key-store: classpath:me_keystore.p12
+    key-store-password: mykey123
+    key-password: mykey123
+    trust-store: classpath:me_truststore.p12
+    trust-store-password: mykey123
