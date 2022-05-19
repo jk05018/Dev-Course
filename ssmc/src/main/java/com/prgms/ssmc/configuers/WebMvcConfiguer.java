@@ -12,6 +12,7 @@ public class WebMvcConfiguer implements WebMvcConfigurer {
 		// ㅇㅣ; path로 오면 아 view를 호출하라
 		registry.addViewController("/").setViewName("index");
 		registry.addViewController("/me").setViewName("me");
+		registry.addViewController("/admin").setViewName("admin");
 	}
 
 }
