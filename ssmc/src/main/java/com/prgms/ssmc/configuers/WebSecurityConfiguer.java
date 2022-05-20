@@ -12,6 +12,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.AliasFor;
 import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.access.expression.SecurityExpressionHandler;
+import org.springframework.security.authentication.AuthenticationTrustResolverImpl;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
@@ -23,6 +25,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.FilterInvocation;
 import org.springframework.security.web.access.AccessDeniedHandler;
 
 @Configuration
@@ -42,17 +45,31 @@ public class WebSecurityConfiguer extends WebSecurityConfigurerAdapter {
 					.build()
 			).withUser(
 				User.builder()
-					.username("admin")
+					.username("admin01")
 					.password(passwordEncoder().encode("admin123"))
 					.roles("ADMIN")
 					.build()
-			);
+			).withUser(
+			User.builder()
+				.username("admin02")
+				.password(passwordEncoder().encode("admin123"))
+				.roles("ADMIN")
+				.build()
+		);
 	}
 
 
 	@Bean
 	PasswordEncoder passwordEncoder(){
 		return NoOpPasswordEncoder.getInstance();
+	}
+
+	@Bean
+	SecurityExpressionHandler<FilterInvocation> securityExpressionHandler(){
+		return new CustomWebSecurityExpressionHandler(
+			new AuthenticationTrustResolverImpl()
+			,"ROLE_"
+		);
 	}
 
 	@Override
@@ -65,7 +82,7 @@ public class WebSecurityConfiguer extends WebSecurityConfigurerAdapter {
 		http
 			.authorizeRequests()
 			.antMatchers("/me").hasAnyRole("USER", "ADMIN")
-			.antMatchers("/admin").access("hasRole('ADMIN') and isFullyAuthenticated()")
+			.antMatchers("/admin").access("hasRole('ADMIN') and isFullyAuthenticated() and oddAdmin")
 			.anyRequest().permitAll()
 			.and()
 			.formLogin()
