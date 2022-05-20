@@ -17,6 +17,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
@@ -90,6 +91,13 @@ public class WebSecurityConfiguer extends WebSecurityConfigurerAdapter {
 			.and()
 			.exceptionHandling()
 			.accessDeniedHandler(accessDeniedHandler())
+			.and()
+			.sessionManagement()
+			.sessionFixation().changeSessionId()
+			.sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
+			.invalidSessionUrl("/")
+			.maximumSessions(1)
+			.maxSessionsPreventsLogin(false)
 		;
 	}
 
