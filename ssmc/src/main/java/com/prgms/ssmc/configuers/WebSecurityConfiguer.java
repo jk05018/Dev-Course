@@ -1,9 +1,5 @@
 package com.prgms.ssmc.configuers;
 
-import java.io.IOException;
-
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
 
@@ -11,11 +7,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.annotation.AliasFor;
-import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.access.expression.SecurityExpressionHandler;
 import org.springframework.security.authentication.AuthenticationTrustResolverImpl;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -23,11 +16,9 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.jdbc.JdbcDaoImpl;
-import org.springframework.security.crypto.password.NoOpPasswordEncoder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.FilterInvocation;
 import org.springframework.security.web.access.AccessDeniedHandler;
@@ -39,10 +30,55 @@ public class WebSecurityConfiguer extends WebSecurityConfigurerAdapter {
 	private final Logger log = LoggerFactory.getLogger(WebSecurityConfiguer.class);
 
 	@Bean
-	public UserDetailsService userDetailsService(DataSource dataSource){
+	public UserDetailsService userDetailsService(DataSource dataSource) {
 		final JdbcDaoImpl jdbcDao = new JdbcDaoImpl();
 		jdbcDao.setDataSource(dataSource);
+		jdbcDao.setEnableAuthorities(false); // default true
+		jdbcDao.setEnableGroups(true); // default false
+		jdbcDao.setUsersByUsernameQuery("SELECT " +
+			"login_id, passwd, true " +
+			"FROM " +
+			"USERS " +
+			"WHERE " +
+			"login_id = ?");
+		jdbcDao.setGroupAuthoritiesByUsernameQuery("SELECT " +
+			"u.login_id, g.name, p.name " +
+			"FROM " +
+			"users u JOIN groups g ON u.group_id = g.id " +
+			"LEFT JOIN group_permission gp ON g.id = gp.group_id " +
+			"JOIN permissions p ON p.id = gp.permission_id " +
+			"WHERE " +
+			"u.login_id = ?");
+
 		return jdbcDao;
+	}
+
+	// @Bean
+	// public UserDetailsManager users(DataSource dataSource) {
+	// 	JdbcUserDetailsManager users = new JdbcUserDetailsManager(dataSource);
+	// 	users.setUsersByUsernameQuery("SELECT " +
+	// 		"login_id, passwd, true " +
+	// 		"FROM " +
+	// 		"USERS " +
+	// 		"WHERE " +
+	// 		"login_id = ?");
+	// 	users.setGroupAuthoritiesByUsernameQuery("SELECT " +
+	// 		"u.login_id, g.name, p.name " +
+	// 		"FROM " +
+	// 		"users u JOIN groups g ON u.group_id = g.id " +
+	// 		"LEFT JOIN group_permission gp ON g.id = gp.group_id " +
+	// 		"JOIN permissions p ON p.id = gp.permission_id " +
+	// 		"WHERE " +
+	// 		"u.login_id = ?");
+	// 	users.setEnableAuthorities(false); // default true
+	// 	users.setEnableGroups(true); // default false
+	//
+	// 	return users;
+	// }
+
+	@Bean
+	public PasswordEncoder passwordEncoder() {
+		return new BCryptPasswordEncoder();
 	}
 
 	@Bean
