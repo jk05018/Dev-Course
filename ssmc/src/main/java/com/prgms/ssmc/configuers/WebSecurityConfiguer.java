@@ -5,10 +5,12 @@ import javax.sql.DataSource;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.access.expression.SecurityExpressionHandler;
 import org.springframework.security.authentication.AuthenticationTrustResolverImpl;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -20,6 +22,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.jdbc.JdbcDaoImpl;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.provisioning.JdbcUserDetailsManager;
+import org.springframework.security.provisioning.UserDetailsManager;
 import org.springframework.security.web.FilterInvocation;
 import org.springframework.security.web.access.AccessDeniedHandler;
 
@@ -29,29 +33,36 @@ public class WebSecurityConfiguer extends WebSecurityConfigurerAdapter {
 
 	private final Logger log = LoggerFactory.getLogger(WebSecurityConfiguer.class);
 
-	@Bean
-	public UserDetailsService userDetailsService(DataSource dataSource) {
-		final JdbcDaoImpl jdbcDao = new JdbcDaoImpl();
-		jdbcDao.setDataSource(dataSource);
-		jdbcDao.setEnableAuthorities(false); // default true
-		jdbcDao.setEnableGroups(true); // default false
-		jdbcDao.setUsersByUsernameQuery("SELECT " +
-			"login_id, passwd, true " +
-			"FROM " +
-			"USERS " +
-			"WHERE " +
-			"login_id = ?");
-		jdbcDao.setGroupAuthoritiesByUsernameQuery("SELECT " +
-			"u.login_id, g.name, p.name " +
-			"FROM " +
-			"users u JOIN groups g ON u.group_id = g.id " +
-			"LEFT JOIN group_permission gp ON g.id = gp.group_id " +
-			"JOIN permissions p ON p.id = gp.permission_id " +
-			"WHERE " +
-			"u.login_id = ?");
+	private DataSource dataSource;
 
-		return jdbcDao;
+	@Autowired
+	public void setDataSource(DataSource dataSource) {
+		this.dataSource = dataSource;
 	}
+
+	// @Bean
+	// public UserDetailsService userDetailsService(DataSource dataSource) {
+	// 	final JdbcDaoImpl jdbcDao = new JdbcDaoImpl();
+	// 	jdbcDao.setDataSource(dataSource);
+	// 	jdbcDao.setEnableAuthorities(false); // default true
+	// 	jdbcDao.setEnableGroups(true); // default false
+	// 	jdbcDao.setUsersByUsernameQuery("SELECT " +
+	// 		"login_id, passwd, true " +
+	// 		"FROM " +
+	// 		"USERS " +
+	// 		"WHERE " +
+	// 		"login_id = ?");
+	// 	jdbcDao.setGroupAuthoritiesByUsernameQuery("SELECT " +
+	// 		"u.login_id, g.name, p.name " +
+	// 		"FROM " +
+	// 		"users u JOIN groups g ON u.group_id = g.id " +
+	// 		"LEFT JOIN group_permission gp ON g.id = gp.group_id " +
+	// 		"JOIN permissions p ON p.id = gp.permission_id " +
+	// 		"WHERE " +
+	// 		"u.login_id = ?");
+	//
+	// 	return jdbcDao;
+	// }
 
 	// @Bean
 	// public UserDetailsManager users(DataSource dataSource) {
@@ -75,6 +86,28 @@ public class WebSecurityConfiguer extends WebSecurityConfigurerAdapter {
 	//
 	// 	return users;
 	// }
+
+	@Override
+	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+		auth
+			.jdbcAuthentication()
+			.dataSource(dataSource)
+			.usersByUsernameQuery("SELECT " +
+				"login_id, passwd, true " +
+				"FROM " +
+				"USERS " +
+				"WHERE " +
+				"login_id = ?")
+			.groupAuthoritiesByUsername("SELECT " +
+				"u.login_id, g.name, p.name " +
+				"FROM " +
+				"users u JOIN groups g ON u.group_id = g.id " +
+				"LEFT JOIN group_permission gp ON g.id = gp.group_id " +
+				"JOIN permissions p ON p.id = gp.permission_id " +
+				"WHERE " +
+				"u.login_id = ?")
+			.getUserDetailsService().setEnableAuthorities(false);
+	}
 
 	@Bean
 	public PasswordEncoder passwordEncoder() {
