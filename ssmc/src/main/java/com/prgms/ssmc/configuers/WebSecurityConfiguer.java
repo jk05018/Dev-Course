@@ -1,15 +1,12 @@
 package com.prgms.ssmc.configuers;
 
 import javax.servlet.http.HttpServletResponse;
-import javax.sql.DataSource;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.access.expression.SecurityExpressionHandler;
-import org.springframework.security.authentication.AuthenticationTrustResolverImpl;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
@@ -18,14 +15,11 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.jdbc.JdbcDaoImpl;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.provisioning.JdbcUserDetailsManager;
-import org.springframework.security.provisioning.UserDetailsManager;
-import org.springframework.security.web.FilterInvocation;
 import org.springframework.security.web.access.AccessDeniedHandler;
+
+import com.prgms.ssmc.user.UserService;
 
 @Configuration
 @EnableWebSecurity
@@ -33,11 +27,11 @@ public class WebSecurityConfiguer extends WebSecurityConfigurerAdapter {
 
 	private final Logger log = LoggerFactory.getLogger(WebSecurityConfiguer.class);
 
-	private DataSource dataSource;
+	private UserService userService;
 
 	@Autowired
-	public void setDataSource(DataSource dataSource) {
-		this.dataSource = dataSource;
+	public void setUserService(UserService userService) {
+		this.userService = userService;
 	}
 
 	// @Bean
@@ -89,37 +83,12 @@ public class WebSecurityConfiguer extends WebSecurityConfigurerAdapter {
 
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-		auth
-			.jdbcAuthentication()
-			.dataSource(dataSource)
-			.usersByUsernameQuery("SELECT " +
-				"login_id, passwd, true " +
-				"FROM " +
-				"USERS " +
-				"WHERE " +
-				"login_id = ?")
-			.groupAuthoritiesByUsername("SELECT " +
-				"u.login_id, g.name, p.name " +
-				"FROM " +
-				"users u JOIN groups g ON u.group_id = g.id " +
-				"LEFT JOIN group_permission gp ON g.id = gp.group_id " +
-				"JOIN permissions p ON p.id = gp.permission_id " +
-				"WHERE " +
-				"u.login_id = ?")
-			.getUserDetailsService().setEnableAuthorities(false);
+		auth.userDetailsService(userService);
 	}
 
 	@Bean
 	public PasswordEncoder passwordEncoder() {
 		return new BCryptPasswordEncoder();
-	}
-
-	@Bean
-	SecurityExpressionHandler<FilterInvocation> securityExpressionHandler() {
-		return new CustomWebSecurityExpressionHandler(
-			new AuthenticationTrustResolverImpl()
-			, "ROLE_"
-		);
 	}
 
 	@Override
@@ -132,7 +101,7 @@ public class WebSecurityConfiguer extends WebSecurityConfigurerAdapter {
 		http
 			.authorizeRequests()
 			.antMatchers("/me").hasAnyRole("USER", "ADMIN")
-			.antMatchers("/admin").access("hasRole('ADMIN') and isFullyAuthenticated() and oddAdmin")
+			.antMatchers("/admin").access("hasRole('ADMIN') and isFullyAuthenticated()")
 			.anyRequest().permitAll()
 			.and()
 			.formLogin()
