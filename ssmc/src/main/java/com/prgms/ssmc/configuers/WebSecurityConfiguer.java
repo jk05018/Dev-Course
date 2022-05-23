@@ -50,31 +50,30 @@ public class WebSecurityConfiguer extends WebSecurityConfigurerAdapter {
 					.roles("ADMIN")
 					.build()
 			).withUser(
-			User.builder()
-				.username("admin02")
-				.password(passwordEncoder().encode("admin123"))
-				.roles("ADMIN")
-				.build()
-		);
+				User.builder()
+					.username("admin02")
+					.password(passwordEncoder().encode("admin123"))
+					.roles("ADMIN")
+					.build()
+			);
 	}
 
-
 	@Bean
-	PasswordEncoder passwordEncoder(){
+	PasswordEncoder passwordEncoder() {
 		return NoOpPasswordEncoder.getInstance();
 	}
 
 	@Bean
-	SecurityExpressionHandler<FilterInvocation> securityExpressionHandler(){
+	SecurityExpressionHandler<FilterInvocation> securityExpressionHandler() {
 		return new CustomWebSecurityExpressionHandler(
 			new AuthenticationTrustResolverImpl()
-			,"ROLE_"
+			, "ROLE_"
 		);
 	}
 
 	@Override
 	public void configure(WebSecurity web) {
-		web.ignoring().antMatchers("/assets/**"); // 필터를 그냥 통화 주로 정적 리소스에 사용
+		web.ignoring().antMatchers("/assets/**", "/h2-console/**"); // 필터를 그냥 통화 주로 정적 리소스에 사용
 	}
 
 	@Override
@@ -86,17 +85,17 @@ public class WebSecurityConfiguer extends WebSecurityConfigurerAdapter {
 			.anyRequest().permitAll()
 			.and()
 			.formLogin()
-				.defaultSuccessUrl("/")
-				.permitAll()
+			.defaultSuccessUrl("/")
+			.permitAll()
 			.and()
 			.logout()
-				.logoutUrl("/logout")
-				.logoutSuccessUrl("/")
+			.logoutUrl("/logout")
+			.logoutSuccessUrl("/")
 			.invalidateHttpSession(true)
 			.clearAuthentication(true)
 			.and()
 			.rememberMe()
-				.rememberMeParameter("remember-me")
+			.rememberMeParameter("remember-me")
 			.tokenValiditySeconds(300)
 			.and()
 			.requiresChannel()
@@ -104,7 +103,7 @@ public class WebSecurityConfiguer extends WebSecurityConfigurerAdapter {
 			.and()
 			.anonymous()
 			.principal("thisIsAnonymousUser")
-			.authorities("ROLE_ANONYMOUS","ROLE_UNKNOWN")
+			.authorities("ROLE_ANONYMOUS", "ROLE_UNKNOWN")
 			.and()
 			.exceptionHandling()
 			.accessDeniedHandler(accessDeniedHandler())
@@ -119,7 +118,7 @@ public class WebSecurityConfiguer extends WebSecurityConfigurerAdapter {
 	}
 
 	@Bean
-	public AccessDeniedHandler accessDeniedHandler(){
+	public AccessDeniedHandler accessDeniedHandler() {
 		return (request, response, accessDeniedException) -> {
 			final Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 			Object principal = authentication != null ? authentication.getPrincipal() : null;
