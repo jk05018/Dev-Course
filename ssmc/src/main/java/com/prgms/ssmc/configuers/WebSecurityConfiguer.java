@@ -5,6 +5,7 @@ import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.sql.DataSource;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,6 +24,9 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.jdbc.JdbcDaoImpl;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.FilterInvocation;
@@ -34,33 +38,11 @@ public class WebSecurityConfiguer extends WebSecurityConfigurerAdapter {
 
 	private final Logger log = LoggerFactory.getLogger(WebSecurityConfiguer.class);
 
-	@Override
-	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-		auth.inMemoryAuthentication()
-			.withUser(
-				User.builder()
-					.username("user")
-					.password(passwordEncoder().encode("user123"))
-					.roles("USER")
-					.build()
-			).withUser(
-				User.builder()
-					.username("admin01")
-					.password(passwordEncoder().encode("admin123"))
-					.roles("ADMIN")
-					.build()
-			).withUser(
-				User.builder()
-					.username("admin02")
-					.password(passwordEncoder().encode("admin123"))
-					.roles("ADMIN")
-					.build()
-			);
-	}
-
 	@Bean
-	PasswordEncoder passwordEncoder() {
-		return NoOpPasswordEncoder.getInstance();
+	public UserDetailsService userDetailsService(DataSource dataSource){
+		final JdbcDaoImpl jdbcDao = new JdbcDaoImpl();
+		jdbcDao.setDataSource(dataSource);
+		return jdbcDao;
 	}
 
 	@Bean
