@@ -5,6 +5,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -18,7 +19,10 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.AccessDeniedHandler;
+import org.springframework.security.web.context.SecurityContextPersistenceFilter;
+
 import com.example.jwt.jwt.Jwt;
+import com.example.jwt.jwt.JwtAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
@@ -29,7 +33,8 @@ public class WebSecurityConfiguer {
 	private UserDetailsService userDetailsService;
 	private JwtConfigure jwtConfigure;
 
-	// Setter로 왜??
+	private ApplicationContext applicationContext;
+
 	@Autowired
 	public void setUserDetailsService(UserDetailsService userDetailsService) {
 		this.userDetailsService = userDetailsService;
@@ -40,14 +45,18 @@ public class WebSecurityConfiguer {
 		this.jwtConfigure = jwtConfigure;
 	}
 
+	@Autowired
+	public void setApplicationContext(ApplicationContext applicationContext) {
+		this.applicationContext = applicationContext;
+	}
+
 	@Bean
 	public PasswordEncoder passwordEncoder() {
 		return new BCryptPasswordEncoder();
 	}
 
-
 	@Bean
-	public WebSecurityCustomizer webSecurityCustomizer(){
+	public WebSecurityCustomizer webSecurityCustomizer() {
 		return (web) -> web.ignoring().antMatchers("/assets/**", "/h2-console/**"); // 필터를 그냥 통화 주로 정적 리소스에 사용
 	}
 
@@ -67,13 +76,22 @@ public class WebSecurityConfiguer {
 			.logout().disable()
 			.sessionManagement((sessionMgmt) ->
 				sessionMgmt.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-			);
+			)
+			.exceptionHandling((exhandling) ->
+				exhandling.accessDeniedHandler(accessDeniedHandler()))
+			.addFilterAfter(jwtAuthenticationFilter(), SecurityContextPersistenceFilter.class);
 
 		return http.build();
 	}
 
 	@Bean
-	public Jwt jwt(){
+	public JwtAuthenticationFilter jwtAuthenticationFilter() {
+		final Jwt jwt = applicationContext.getBean(Jwt.class);
+		return new JwtAuthenticationFilter(jwtConfigure.getHeader(), jwt);
+	}
+
+	@Bean
+	public Jwt jwt() {
 		return new Jwt(
 			jwtConfigure.getIssuer(),
 			jwtConfigure.getClientSecret(),
