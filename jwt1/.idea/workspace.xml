@@ -1,0 +1,251 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="bfb7f94c-c1d4-41cb-ad45-946338c4e47b" name="Changes" comment="build : Spring Security Project setting">
+      <change afterPath="$PROJECT_DIR$/../jwt/src/main/java/com/example/jwt/JwtApplication.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../jwt/src/main/java/com/example/jwt/configuers/DataSourcePostProcessor.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../jwt/src/main/java/com/example/jwt/configuers/JwtConfigure.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../jwt/src/main/java/com/example/jwt/configuers/WebSecurityConfiguer.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../jwt/src/main/java/com/example/jwt/user/Group.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../jwt/src/main/java/com/example/jwt/user/GroupPermission.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../jwt/src/main/java/com/example/jwt/user/Permission.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../jwt/src/main/java/com/example/jwt/user/User.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../jwt/src/main/java/com/example/jwt/user/UserRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../jwt/src/main/java/com/example/jwt/user/UserService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../jwt/src/main/resources/application.yml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../jwt/src/main/resources/banner.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../jwt/src/main/resources/i18n/messages.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../jwt/src/main/resources/logback.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../jwt/src/main/resources/sql/data.sql" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../jwt/src/main/resources/sql/data_new.sql" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../jwt/src/main/resources/sql/schema.sql" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../jwt/src/main/resources/sql/schema_new.sql" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../jwt/src/test/java/com/example/jwt/JwtApplicationTests.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ssmc/database/spring_security.db.mv.db" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../ssmc/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../ssmc/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../ssmc/src/main/java/com/prgms/ssmc/configuers/WebMvcConfiguer.java" beforeDir="false" afterPath="$PROJECT_DIR$/../ssmc/src/main/java/com/prgms/ssmc/configuers/WebMvcConfiguer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../ssmc/src/main/java/com/prgms/ssmc/configuers/WebSecurityConfiguer.java" beforeDir="false" afterPath="$PROJECT_DIR$/../ssmc/src/main/java/com/prgms/ssmc/configuers/WebSecurityConfiguer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../ssmc/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/../ssmc/src/main/resources/application.yml" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="HTML File" />
+        <option value="package.json" />
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+  </component>
+  <component name="JpbToolWindowState">
+    <option name="myId2FirstActivated">
+      <map>
+        <entry key="com.haulmont.jpb.jpaInspector" value="true" />
+        <entry key="com.haulmont.jpb.jpaPalette" value="true" />
+        <entry key="com.haulmont.jpb.jpaStructure" value="true" />
+      </map>
+    </option>
+    <option name="myId2Visible">
+      <map>
+        <entry key="com.haulmont.jpb.jpaInspector" value="false" />
+        <entry key="com.haulmont.jpb.jpaPalette" value="false" />
+        <entry key="com.haulmont.jpb.jpaStructure" value="false" />
+      </map>
+    </option>
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="MavenImportPreferences">
+    <option name="generalSettings">
+      <MavenGeneralSettings>
+        <option name="mavenHome" value="Use Maven wrapper" />
+        <option name="useMavenConfig" value="true" />
+      </MavenGeneralSettings>
+    </option>
+  </component>
+  <component name="ProjectId" id="29GoilTVWgL8g5FRncRUBcxr1fb" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
+  <component name="ProjectViewState">
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ASKED_ADD_EXTERNAL_FILES": "true",
+    "DefaultHtmlFileTemplate": "HTML File",
+    "RequestMappingsPanelOrder0": "0",
+    "RequestMappingsPanelOrder1": "1",
+    "RequestMappingsPanelWidth0": "75",
+    "RequestMappingsPanelWidth1": "75",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "last_opened_file_path": "/Users/hwangseunghan/Dropbox/Mac/Documents/dev-course/jwt",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "preferences.pluginManager",
+    "spring.configuration.checksum": "2514c57086cf4ff347a770c5380cf0c9"
+  }
+}]]></component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/main/resources" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/main/resources" />
+      <recent name="$PROJECT_DIR$/src/main/resources/static/assets/icons" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Spring Boot.SsmcApplication (1)">
+    <configuration name="ThreadLocalApp" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="com.prgms.ssmc.ThreadLocalApp" />
+      <module name="ssmc" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.prgms.ssmc.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="SsmcApplication (1)" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
+      <option name="ACTIVE_PROFILES" />
+      <module name="jwt" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.prgms.ssmc.SsmcApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="SsmcApplication (2)" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
+      <module name="jwt1" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.prgms.ssmc.SsmcApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="SsmcApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
+      <option name="ACTIVE_PROFILES" />
+      <module name="jwt" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.prgms.ssmc.SsmcApplication" />
+      <option name="WORKING_DIRECTORY" value="file://$MODULE_WORKING_DIR$" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <list>
+      <item itemvalue="Application.ThreadLocalApp" />
+      <item itemvalue="Spring Boot.SsmcApplication (2)" />
+      <item itemvalue="Spring Boot.SsmcApplication (1)" />
+      <item itemvalue="Spring Boot.SsmcApplication" />
+    </list>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Application.ThreadLocalApp" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="bfb7f94c-c1d4-41cb-ad45-946338c4e47b" name="Changes" comment="" />
+      <created>1652748922624</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1652748922624</updated>
+      <workItem from="1652748927220" duration="3833000" />
+      <workItem from="1652760232296" duration="12512000" />
+      <workItem from="1652798710863" duration="113000" />
+      <workItem from="1652799390386" duration="25000" />
+      <workItem from="1652799424866" duration="221000" />
+      <workItem from="1652841799216" duration="7881000" />
+      <workItem from="1652860626400" duration="2485000" />
+      <workItem from="1652916461609" duration="5010000" />
+      <workItem from="1652924420627" duration="160000" />
+      <workItem from="1652924629986" duration="9074000" />
+      <workItem from="1652961257475" duration="491000" />
+      <workItem from="1653004020654" duration="4281000" />
+      <workItem from="1653020613420" duration="5654000" />
+      <workItem from="1653057094237" duration="2437000" />
+      <workItem from="1653286361822" duration="331000" />
+      <workItem from="1653286800466" duration="4011000" />
+      <workItem from="1653292970975" duration="477000" />
+      <workItem from="1653305166110" duration="7196000" />
+      <workItem from="1653369597711" duration="538000" />
+      <workItem from="1653370166251" duration="20000" />
+      <workItem from="1653388074829" duration="4424000" />
+      <workItem from="1653402633382" duration="436000" />
+      <workItem from="1653405087085" duration="1090000" />
+      <workItem from="1653457567305" duration="1720000" />
+      <workItem from="1653476549077" duration="13000" />
+      <workItem from="1653480264907" duration="633000" />
+      <workItem from="1653536794684" duration="2240000" />
+      <workItem from="1653539568140" duration="211000" />
+    </task>
+    <task id="LOCAL-00001" summary="build : Spring Security Project setting">
+      <created>1652749897622</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1652749897623</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
+    <MESSAGE value="build : Spring Security Project setting" />
+    <option name="LAST_COMMIT_MESSAGE" value="build : Spring Security Project setting" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint type="java-line">
+          <url>jar://$MAVEN_REPOSITORY$/org/springframework/security/spring-security-web/5.6.3/spring-security-web-5.6.3-sources.jar!/org/springframework/security/web/authentication/AbstractAuthenticationProcessingFilter.java</url>
+          <line>319</line>
+          <option name="timeStamp" value="7" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>jar://$MAVEN_REPOSITORY$/org/springframework/security/spring-security-web/5.5.1/spring-security-web-5.5.1-sources.jar!/org/springframework/security/web/authentication/rememberme/TokenBasedRememberMeServices.java</url>
+          <line>163</line>
+          <option name="timeStamp" value="10" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+    <pin-to-top-manager>
+      <pinned-members>
+        <PinnedItemInfo parentTag="org.springframework.security.web.servletapi.HttpServlet3RequestFactory$Servlet3SecurityContextHolderAwareRequestWrapper" memberName="trustResolver" />
+      </pinned-members>
+    </pin-to-top-manager>
+  </component>
+</project>
