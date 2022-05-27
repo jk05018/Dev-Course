@@ -20,10 +20,12 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.context.SecurityContextPersistenceFilter;
+import org.springframework.security.web.context.SecurityContextRepository;
 
 import com.example.jwt.jwt.Jwt;
 import com.example.jwt.jwt.JwtAuthenticationFilter;
 import com.example.jwt.jwt.JwtAuthenticationProvider;
+import com.example.jwt.jwt.JwtSecurityContextRepository;
 import com.example.jwt.user.UserService;
 
 @Configuration
@@ -92,10 +94,10 @@ public class WebSecurityConfiguer extends WebSecurityConfigurerAdapter {
 		return new JwtAuthenticationFilter(jwtConfigure.getHeader(), jwt);
 	}
 
-	// public SecurityContextRepository securityContextRepository() {
-	// 	Jwt jwt = getApplicationContext().getBean(Jwt.class);
-	// 	return new JwtSecurityContextRepository(jwtConfigure.getHeader(), jwt);
-	// }
+	public SecurityContextRepository securityContextRepository() {
+		Jwt jwt = getApplicationContext().getBean(Jwt.class);
+		return new JwtSecurityContextRepository(jwtConfigure.getHeader(), jwt);
+	}
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
@@ -134,13 +136,13 @@ public class WebSecurityConfiguer extends WebSecurityConfigurerAdapter {
 			/**
 			 * JwtSecurityContextRepository 설정
 			 */
-			// .securityContext()
-			// .securityContextRepository(securityContextRepository())
-			// .and()
+			.securityContext()
+			.securityContextRepository(securityContextRepository())
+			.and()
 		/**
 		 * jwtAuthenticationFilter 추가
 		 */
-		.addFilterAfter(jwtAuthenticationFilter(), SecurityContextPersistenceFilter.class)
+		// .addFilterAfter(jwtAuthenticationFilter(), SecurityContextPersistenceFilter.class)
 		;
 	}
 }
