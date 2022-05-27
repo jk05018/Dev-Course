@@ -31,14 +31,17 @@ public class UserRestController {
 		final Authentication resultToken = authenticationManager.authenticate(authToken);
 		JwtAuthenticationToken authenticated = (JwtAuthenticationToken)resultToken;
 		JwtAuthentication principal = (JwtAuthentication)authenticated.getPrincipal();
-		final User user = (User)authenticated.getDetails();ㅁ
+		final User user = (User)authenticated.getDetails();
 		return new UserDto(principal.token, principal.username, user.getGroup().getName());
 	}
 
 	@GetMapping("/user/me")
 	public UserDto me(@AuthenticationPrincipal JwtAuthentication authentication){
+		// @AuthenticationPrincipal 어노테이션읟 동작 방식을 알고 싶다면 AuthenticationPrincipalArgumentResolver 클래스를 보면 된다.
 		// @AuthenticationPrincipal 어노테이셔을 붙이면 SecurityContext 에 저장되어 있던 AUTHENTIcation에서 Principal을 가져온다?
-
+		return userService.findByLoginId(authentication.username).map(user ->
+			new UserDto(authentication.token, authentication.username,  user.getGroup().getName()))
+			.orElseThrow(() -> new IllegalArgumentException("Could not found user for" + authentication.username));
 	}
 
 
