@@ -18,7 +18,7 @@ import org.springframework.security.web.context.SecurityContextPersistenceFilter
 
 import com.example.oauth2.jwt.Jwt;
 import com.example.oauth2.jwt.JwtAuthenticationFilter;
-import com.example.oauth2.user.UserService;
+import com.example.oauth2.oauth2.OAuth2AuthenticationSuccessHandler;
 
 @Configuration
 @EnableWebSecurity
@@ -82,11 +82,18 @@ public class WebSecurityConfiguer extends WebSecurityConfigurerAdapter {
 	// public OAuth2AuthorizedClientRepository authorizedClientRepository(OAuth2AuthorizedClientService authorizedClientService) {
 	// 	return new AuthenticatedPrincipalOAuth2AuthorizedClientRepository(authorizedClientService);
 	// }
-	//
+
 	// @Bean
 	// public OAuth2AuthenticationSuccessHandler oauth2AuthenticationSuccessHandler(Jwt jwt, UserService userService) {
 	// 	return new OAuth2AuthenticationSuccessHandler(jwt, userService);
 	// }
+
+	@Bean
+	public OAuth2AuthenticationSuccessHandler oauth2AuthenticationSuccessHandler() {
+		return new OAuth2AuthenticationSuccessHandler();
+	}
+
+
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
@@ -110,25 +117,17 @@ public class WebSecurityConfiguer extends WebSecurityConfigurerAdapter {
 			.disable()
 			.logout()
 			.disable()
-			/**
-			 * Session 사용하지 않음
-			 */
 			.sessionManagement()
 			.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 			.and()
-			/**
-			 * OAuth2 설정
-			 */
-			// .oauth2Login()
+			.oauth2Login()
+			.successHandler(oauth2AuthenticationSuccessHandler())
 			// .authorizationEndpoint()
 			// .authorizationRequestRepository(authorizationRequestRepository())
 			// .and()
 			// .successHandler(getApplicationContext().getBean(OAuth2AuthenticationSuccessHandler.class))
 			// .authorizedClientRepository(getApplicationContext().getBean(AuthenticatedPrincipalOAuth2AuthorizedClientRepository.class))
-			// .and()
-			/**
-			 * 예외처리 핸들러
-			 */
+			.and()
 			.exceptionHandling()
 			.accessDeniedHandler(accessDeniedHandler())
 			.and()

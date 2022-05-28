@@ -32,7 +32,7 @@ spring:
   sql:
     init:
       platform: h2
-      schema-locations: classpath:sql/schema_new.sql, classpath:org/springframework/security/oauth2/client/oauth2-client-schema.sql
+      schema-locations: classpath:sql/schema_new.sql
       data-locations: classpath:sql/data_new.sql
       encoding: UTF-8
   security:
@@ -41,18 +41,18 @@ spring:
         registration:
           kakao:
             client-name: kakao
-            client-id: 417c346a5ac77e235b0ce3a98122fdbc #Rest API 키
-            client-secret: RIqSv3xvxwD7HauYeZHirbSMdtua5xSr # 보안 - client secret key
-            scope: profile_nickname, profile_image # 필수 동의 항목들
-            redirect-uri: "http://localhost:8080/login/oauth2/code/{registrationId}" # 아래에 kakao만 등록하면 마지막에 kakao가 들어감
+            client-id: 67fc36be09073977f0b14f72b470c427
+            client-secret: vXcMXdbVq90dLBtZndkM16STYxazo92s
+            scope: profile_nickname, profile_image
+            redirect-uri: "http://localhost:8080/login/oauth2/code/{registrationId}"
             authorization-grant-type: authorization_code
             client-authentication-method: POST
         provider:
           kakao:
-            authorization-uri: https://kauth.kakao.com/oauth/authorize # 1회성 승인 코드를 받기 위한 URI
-            token-uri: https://kauth.kakao.com/oauth/token # access token을 발급 받기 위한 api
-            user-info-uri: https://kapi.kakao.com/v2/user/me # access token을 이용 사용자 정보를 가져오기 위한 API
-            user-name-attribute: id # api 에서 사용자 식별 정보를 가져왔을 때 식별할 수 있는 고유 식별 키?
+            authorization-uri: https://kauth.kakao.com/oauth/authorize
+            token-uri: https://kauth.kakao.com/oauth/token
+            user-info-uri: https://kapi.kakao.com/v2/user/me
+            user-name-attribute: id
 server:
   port: 8080
 jwt:
