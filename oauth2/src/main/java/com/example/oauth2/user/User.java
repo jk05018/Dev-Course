@@ -1,13 +1,22 @@
 package com.example.oauth2.user;
 
+import static com.google.common.base.Preconditions.*;
+import static java.util.Optional.*;
+import static org.apache.commons.lang3.StringUtils.*;
+
+import java.util.Optional;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import org.springframework.security.crypto.password.PasswordEncoder;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 
 @Entity
 @Table(name = "users")
@@ -15,34 +24,58 @@ public class User {
 
 	@Id
 	@Column(name = "id")
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@Column(name = "login_id")
-	private String loginId;
+	@Column(name = "username")
+	private String username;
 
-	@Column(name = "passwd")
-	private String passwd;
+	@Column(name = "provider")
+	private String provider;
+
+	@Column(name = "provider_id")
+	private String providerId;
+
+	@Column(name = "profile_image")
+	private String profileImage;
 
 	@ManyToOne(optional = false)
 	@JoinColumn(name = "group_id")
 	private Group group;
 
-	public void checkPassword(PasswordEncoder passwordEncoder, String credentials){
-		if (!passwordEncoder.matches(credentials, passwd)) {
-			throw new IllegalArgumentException("Bad credentials");
-		}
+	protected User() {/*no-op*/}
+
+	public User(String username, String provider, String providerId, String profileImage, Group group) {
+		checkArgument(isNotEmpty(username), "username must be provided.");
+		checkArgument(isNotEmpty(provider), "provider must be provided.");
+		checkArgument(isNotEmpty(providerId), "providerId must be provided.");
+		checkArgument(group != null, "group must be provided.");
+
+		this.username = username;
+		this.provider = provider;
+		this.providerId = providerId;
+		this.profileImage = profileImage;
+		this.group = group;
 	}
 
 	public Long getId() {
 		return id;
 	}
 
-	public String getLoginId() {
-		return loginId;
+	public String getUsername() {
+		return username;
 	}
 
-	public String getPasswd() {
-		return passwd;
+	public String getProvider() {
+		return provider;
+	}
+
+	public String getProviderId() {
+		return providerId;
+	}
+
+	public Optional<String> getProfileImage() {
+		return ofNullable(profileImage);
 	}
 
 	public Group getGroup() {
@@ -51,6 +84,13 @@ public class User {
 
 	@Override
 	public String toString() {
-		return String.format("User{id=%d, loginId='%s', passwd='%s', group=%s}", id, loginId, passwd, group);
+		return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
+			.append("id", id)
+			.append("username", username)
+			.append("provider", provider)
+			.append("providerId", providerId)
+			.append("profileImage", profileImage)
+			.toString();
 	}
+
 }

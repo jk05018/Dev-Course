@@ -19,6 +19,7 @@ import org.springframework.security.web.context.SecurityContextPersistenceFilter
 import com.example.oauth2.jwt.Jwt;
 import com.example.oauth2.jwt.JwtAuthenticationFilter;
 import com.example.oauth2.oauth2.OAuth2AuthenticationSuccessHandler;
+import com.example.oauth2.user.UserService;
 
 @Configuration
 @EnableWebSecurity
@@ -89,8 +90,8 @@ public class WebSecurityConfiguer extends WebSecurityConfigurerAdapter {
 	// }
 
 	@Bean
-	public OAuth2AuthenticationSuccessHandler oauth2AuthenticationSuccessHandler() {
-		return new OAuth2AuthenticationSuccessHandler();
+	public OAuth2AuthenticationSuccessHandler oauth2AuthenticationSuccessHandler(Jwt jwt, UserService userService) {
+		return new OAuth2AuthenticationSuccessHandler(jwt, userService);
 	}
 
 
@@ -121,7 +122,7 @@ public class WebSecurityConfiguer extends WebSecurityConfigurerAdapter {
 			.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 			.and()
 			.oauth2Login()
-			.successHandler(oauth2AuthenticationSuccessHandler())
+			.successHandler(getApplicationContext().getBean(OAuth2AuthenticationSuccessHandler.class))
 			// .authorizationEndpoint()
 			// .authorizationRequestRepository(authorizationRequestRepository())
 			// .and()
