@@ -26,10 +26,11 @@ import com.example.jwt.jwt.Jwt;
 import com.example.jwt.jwt.JwtAuthenticationFilter;
 import com.example.jwt.jwt.JwtAuthenticationProvider;
 import com.example.jwt.jwt.JwtSecurityContextRepository;
+import com.example.jwt.oauth2.OAuth2AuthenticationSuccessHandler;
 import com.example.jwt.user.UserService;
 
 @Configuration
-@EnableWebSecurity(debug = true)
+@EnableWebSecurity
 public class WebSecurityConfiguer extends WebSecurityConfigurerAdapter {
 
 	private final Logger log = LoggerFactory.getLogger(getClass());
@@ -136,13 +137,13 @@ public class WebSecurityConfiguer extends WebSecurityConfigurerAdapter {
 			/**
 			 * JwtSecurityContextRepository 설정
 			 */
-			.securityContext()
-			.securityContextRepository(securityContextRepository())
-			.and()
+			// .securityContext()
+			// .securityContextRepository(securityContextRepository())
+			// .and()
 		/**
 		 * jwtAuthenticationFilter 추가
 		 */
-		// .addFilterAfter(jwtAuthenticationFilter(), SecurityContextPersistenceFilter.class)
+		.addFilterAfter(jwtAuthenticationFilter(), SecurityContextPersistenceFilter.class)
 		;
 	}
 }
