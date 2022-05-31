@@ -44,10 +44,9 @@ public class UserRestController {
 	public UserDto login(@RequestBody LoginRequest request) {
 		JwtAuthenticationToken authToken = new JwtAuthenticationToken(request.getPrincipal(), request.getCredentials());
 		Authentication resultToken = authenticationManager.authenticate(authToken);
-		JwtAuthentication authentication = (JwtAuthentication) resultToken.getPrincipal();
-		User user = (User) resultToken.getDetails();
+		JwtAuthentication authentication = (JwtAuthentication)resultToken.getPrincipal();
+		User user = (User)resultToken.getDetails();
 		return new UserDto(authentication.token, authentication.username, user.getGroup().getName());
 	}
-
 
 }

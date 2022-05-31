@@ -41,8 +41,8 @@ public class JwtAuthenticationFilter extends GenericFilterBean {
 	@Override
 	public void doFilter(ServletRequest req, ServletResponse res, FilterChain chain)
 		throws IOException, ServletException {
-		HttpServletRequest request = (HttpServletRequest) req;
-		HttpServletResponse response = (HttpServletResponse) res;
+		HttpServletRequest request = (HttpServletRequest)req;
+		HttpServletResponse response = (HttpServletResponse)res;
 
 		if (SecurityContextHolder.getContext().getAuthentication() == null) {
 			String token = getToken(request);
@@ -95,6 +95,5 @@ public class JwtAuthenticationFilter extends GenericFilterBean {
 			emptyList() :
 			Arrays.stream(roles).map(SimpleGrantedAuthority::new).collect(toList());
 	}
-
 
 }

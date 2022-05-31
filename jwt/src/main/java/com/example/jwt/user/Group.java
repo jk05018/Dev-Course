@@ -35,7 +35,7 @@ public class Group {
 		return name;
 	}
 
-	public List<GrantedAuthority> getAuthorities(){
+	public List<GrantedAuthority> getAuthorities() {
 		return permissions.stream()
 			.map(gp -> new SimpleGrantedAuthority(gp.getPermission().getName()))
 			.collect(Collectors.toList());

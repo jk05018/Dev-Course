@@ -8,7 +8,8 @@ public class LoginRequest {
 
 	private String credentials;
 
-	protected LoginRequest() {}
+	protected LoginRequest() {
+	}
 
 	public LoginRequest(String principal, String credentials) {
 		this.principal = principal;

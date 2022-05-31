@@ -27,7 +27,7 @@ public class User {
 	@JoinColumn(name = "group_id")
 	private Group group;
 
-	public void checkPassword(PasswordEncoder passwordEncoder, String credentials){
+	public void checkPassword(PasswordEncoder passwordEncoder, String credentials) {
 		if (!passwordEncoder.matches(credentials, passwd)) {
 			throw new IllegalArgumentException("Bad credentials");
 		}

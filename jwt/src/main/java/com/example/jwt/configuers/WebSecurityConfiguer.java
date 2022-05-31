@@ -26,7 +26,6 @@ import com.example.jwt.jwt.Jwt;
 import com.example.jwt.jwt.JwtAuthenticationFilter;
 import com.example.jwt.jwt.JwtAuthenticationProvider;
 import com.example.jwt.jwt.JwtSecurityContextRepository;
-import com.example.jwt.oauth2.OAuth2AuthenticationSuccessHandler;
 import com.example.jwt.user.UserService;
 
 @Configuration
@@ -86,7 +85,8 @@ public class WebSecurityConfiguer extends WebSecurityConfigurerAdapter {
 	}
 
 	@Autowired
-	public void configureAuthentication(AuthenticationManagerBuilder builder, JwtAuthenticationProvider authenticationProvider) {
+	public void configureAuthentication(AuthenticationManagerBuilder builder,
+		JwtAuthenticationProvider authenticationProvider) {
 		builder.authenticationProvider(authenticationProvider);
 	}
 
@@ -140,10 +140,10 @@ public class WebSecurityConfiguer extends WebSecurityConfigurerAdapter {
 			// .securityContext()
 			// .securityContextRepository(securityContextRepository())
 			// .and()
-		/**
-		 * jwtAuthenticationFilter 추가
-		 */
-		.addFilterAfter(jwtAuthenticationFilter(), SecurityContextPersistenceFilter.class)
+			/**
+			 * jwtAuthenticationFilter 추가
+			 */
+			.addFilterAfter(jwtAuthenticationFilter(), SecurityContextPersistenceFilter.class)
 		;
 	}
 }
