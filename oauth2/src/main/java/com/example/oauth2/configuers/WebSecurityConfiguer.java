@@ -6,6 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -13,11 +14,19 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.oauth2.client.JdbcOAuth2AuthorizedClientService;
+import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService;
+import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
+import org.springframework.security.oauth2.client.web.AuthenticatedPrincipalOAuth2AuthorizedClientRepository;
+import org.springframework.security.oauth2.client.web.AuthorizationRequestRepository;
+import org.springframework.security.oauth2.client.web.OAuth2AuthorizedClientRepository;
+import org.springframework.security.oauth2.core.endpoint.OAuth2AuthorizationRequest;
 import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.context.SecurityContextPersistenceFilter;
 
 import com.example.oauth2.jwt.Jwt;
 import com.example.oauth2.jwt.JwtAuthenticationFilter;
+import com.example.oauth2.oauth2.HttpCookieOAuth2AuthorizationRequestRepository;
 import com.example.oauth2.oauth2.OAuth2AuthenticationSuccessHandler;
 import com.example.oauth2.user.UserService;
 
@@ -66,10 +75,10 @@ public class WebSecurityConfiguer extends WebSecurityConfigurerAdapter {
 		return new JwtAuthenticationFilter(jwtConfigure.getHeader(), jwt);
 	}
 
-	// @Bean
-	// public AuthorizationRequestRepository<OAuth2AuthorizationRequest> authorizationRequestRepository() {
-	// 	return new HttpCookieOAuth2AuthorizationRequestRepository();
-	// }
+	@Bean
+	public AuthorizationRequestRepository<OAuth2AuthorizationRequest> authorizationRequestRepository() {
+		return new HttpCookieOAuth2AuthorizationRequestRepository();
+	}
 
 	// @Bean
 	// public OAuth2AuthorizedClientService authorizedClientService(
@@ -84,17 +93,11 @@ public class WebSecurityConfiguer extends WebSecurityConfigurerAdapter {
 	// 	return new AuthenticatedPrincipalOAuth2AuthorizedClientRepository(authorizedClientService);
 	// }
 
-	// @Bean
-	// public OAuth2AuthenticationSuccessHandler oauth2AuthenticationSuccessHandler(Jwt jwt, UserService userService) {
-	// 	return new OAuth2AuthenticationSuccessHandler(jwt, userService);
-	// }
 
 	@Bean
 	public OAuth2AuthenticationSuccessHandler oauth2AuthenticationSuccessHandler(Jwt jwt, UserService userService) {
 		return new OAuth2AuthenticationSuccessHandler(jwt, userService);
 	}
-
-
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
@@ -118,17 +121,25 @@ public class WebSecurityConfiguer extends WebSecurityConfigurerAdapter {
 			.disable()
 			.logout()
 			.disable()
+			/**
+			 * Session 사용하지 않음
+			 */
 			.sessionManagement()
 			.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 			.and()
+			/**
+			 * OAuth2 설정
+			 */
 			.oauth2Login()
+			.authorizationEndpoint()
+			.authorizationRequestRepository(authorizationRequestRepository())
+			.and()
 			.successHandler(getApplicationContext().getBean(OAuth2AuthenticationSuccessHandler.class))
-			// .authorizationEndpoint()
-			// .authorizationRequestRepository(authorizationRequestRepository())
-			// .and()
-			// .successHandler(getApplicationContext().getBean(OAuth2AuthenticationSuccessHandler.class))
 			// .authorizedClientRepository(getApplicationContext().getBean(AuthenticatedPrincipalOAuth2AuthorizedClientRepository.class))
 			.and()
+			/**
+			 * 예외처리 핸들러
+			 */
 			.exceptionHandling()
 			.accessDeniedHandler(accessDeniedHandler())
 			.and()

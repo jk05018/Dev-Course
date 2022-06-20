@@ -32,7 +32,7 @@ spring:
   sql:
     init:
       platform: h2
-      schema-locations: classpath:sql/schema_new.sql
+      schema-locations: classpath:sql/schema_new.sql, classpath:org/springframework/security/oauth2/client/oauth2-client-schema.sql
       data-locations: classpath:sql/data_new.sql
       encoding: UTF-8
   security:
@@ -59,4 +59,4 @@ jwt:
   header: token
   issuer: prgrms
   client-secret: EENY5W0eegTf1naQB2eDeyCLl5kRS2b8xa5c4qLdS0hmVjtbvo8tOyhPMcAmtPuQ
-  expiry-seconds: 60
+  expiry-seconds: 600
