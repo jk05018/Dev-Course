@@ -1,9 +1,12 @@
 package com.prgms.ssmc.configuers;
 
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.session.jdbc.config.annotation.web.http.EnableJdbcHttpSession;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+@EnableJdbcHttpSession
 @Configuration
 public class WebMvcConfiguer implements WebMvcConfigurer {
 
